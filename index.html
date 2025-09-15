@@ -1,261 +1,124 @@
 <!doctype html>
 <html lang="nl">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Digitale Visitekaart – Starter</title>
-  <style>
-    :root{--bg:#0b0c10;--card:#111317;--ink:#e6e6e6;--muted:#9aa3af;--accent:#6ee7b7;--border:#1f242d}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,"Helvetica Neue",Arial,sans-serif;background:linear-gradient(180deg,#0b0c10, #0e1016);color:var(--ink)}
-    .wrap{max-width:1100px;margin:auto;padding:24px}
-    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:18px}
-    header h1{font-size:22px;margin:0}
-    header .actions{display:flex;gap:10px}
-    button{background:var(--card);color:var(--ink);border:1px solid var(--border);padding:10px 14px;border-radius:12px;cursor:pointer}
-    button:hover{border-color:#2b3340}
-    main{display:grid;grid-template-columns:1.1fr 1fr;gap:20px}
-    @media (max-width:960px){main{grid-template-columns:1fr;}}
-    .card{background:radial-gradient(1200px 500px at 10% -10%,rgba(110,231,183,.15),transparent),var(--card);border:1px solid var(--border);border-radius:20px;padding:22px;position:relative;overflow:hidden}
-    .preview{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
-    .avatar{width:88px;height:88px;border-radius:18px;border:1px solid var(--border);object-fit:cover;background:#0f1218}
-    .name{font-weight:700;font-size:20px}
-    .title{color:var(--muted);font-size:14px}
-    .company{font-size:14px;color:var(--muted)}
-    .contact{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap}
-    .contact a{color:var(--accent);text-decoration:none}
-    .muted{color:var(--muted)}
-    form{display:grid;gap:12px}
-    label{font-size:13px;color:var(--muted)}
-    input, textarea{width:100%;padding:10px 12px;background:#0e1219;color:var(--ink);border:1px solid var(--border);border-radius:12px}
-    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    .pill{font-size:12px;padding:6px 10px;border:1px solid var(--border);border-radius:999px}
-    footer{margin-top:8px;font-size:12px;color:var(--muted)}
-    .notice{border-left:3px solid var(--accent);background:#0e1513;padding:10px 12px;border-radius:10px}
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <header>
-      <h1>Digitale Visitekaart – Starter</h1>
-      <div class="actions">
-        <button id="btnShare">Delen</button>
-        <button id="btnVCard">Download vCard</button>
-      </div>
-    </header>
-
-    <main>
-      <section class="card" aria-labelledby="previewTitle">
-        <h2 id="previewTitle" class="muted" style="margin-top:0">Voorbeeldkaart</h2>
-        <div class="preview">
-          <img id="avatarPreview" class="avatar" alt="Profielfoto" />
-          <div>
-            <div class="name" id="namePreview">Jouw Naam</div>
-            <div class="title" id="titlePreview">Functie</div>
-            <div class="company" id="companyPreview">Bedrijf</div>
-            <div class="contact">
-              <a href="#" id="emailLink">E‑mail</a>
-              <a href="#" id="telLink">Telefoon</a>
-              <a href="#" id="webLink">Website</a>
-              <a href="#" id="liLink">LinkedIn</a>
-              <a href="#" id="igLink">Instagram</a>
-              <a href="#" id="xLink">X</a>
-            </div>
-          </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Digitale Visitekaart</title>
+    <meta
+      name="description"
+      content="Bouw en deel eenvoudig een digitale visitekaart met AI-taglines."
+    />
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Digitale Visitekaart</h1>
+        <div class="actions">
+          <button id="btnShare" type="button">Delen</button>
+          <button id="btnVCard" type="button">Download vCard</button>
         </div>
-        <p id="tagline" style="margin-top:16px"></p>
-      </section>
+      </header>
 
-      <section class="card" aria-labelledby="editTitle">
-        <h2 id="editTitle" class="muted" style="margin-top:0">Bewerken</h2>
-        <form id="editForm">
-          <div class="grid-2">
+      <main>
+        <section class="card" aria-labelledby="previewTitle">
+          <h2 id="previewTitle" class="muted">Voorbeeldkaart</h2>
+          <div class="preview">
+            <img id="avatarPreview" class="avatar" alt="Profielfoto" />
             <div>
-              <label>Naam</label>
-              <input name="name" placeholder="Jouw Naam" />
-            </div>
-            <div>
-              <label>Functie</label>
-              <input name="title" placeholder="Bijv. Founder" />
-            </div>
-          </div>
-          <div class="grid-2">
-            <div>
-              <label>Bedrijf</label>
-              <input name="company" placeholder="Bedrijfsnaam" />
-            </div>
-            <div>
-              <label>Website</label>
-              <input name="website" placeholder="https://..." />
+              <div class="name" id="namePreview">Jouw Naam</div>
+              <div class="title" id="titlePreview">Functie</div>
+              <div class="company" id="companyPreview">Bedrijf</div>
+              <div class="contact">
+                <a href="#" id="emailLink">E‑mail</a>
+                <a href="#" id="telLink">Telefoon</a>
+                <a href="#" id="webLink">Website</a>
+                <a href="#" id="liLink">LinkedIn</a>
+                <a href="#" id="igLink">Instagram</a>
+                <a href="#" id="xLink">X</a>
+              </div>
             </div>
           </div>
-          <div class="grid-2">
-            <div>
-              <label>E‑mail</label>
-              <input name="email" type="email" placeholder="jij@voorbeeld.nl" />
+          <p id="tagline"></p>
+        </section>
+
+        <section class="card" aria-labelledby="editTitle">
+          <h2 id="editTitle" class="muted">Bewerken</h2>
+          <form id="editForm">
+            <div class="grid-2">
+              <div>
+                <label for="fieldName">Naam</label>
+                <input id="fieldName" name="name" placeholder="Jouw Naam" />
+              </div>
+              <div>
+                <label for="fieldTitle">Functie</label>
+                <input id="fieldTitle" name="title" placeholder="Bijv. Founder" />
+              </div>
+            </div>
+            <div class="grid-2">
+              <div>
+                <label for="fieldCompany">Bedrijf</label>
+                <input id="fieldCompany" name="company" placeholder="Bedrijfsnaam" />
+              </div>
+              <div>
+                <label for="fieldWebsite">Website</label>
+                <input id="fieldWebsite" name="website" placeholder="https://..." />
+              </div>
+            </div>
+            <div class="grid-2">
+              <div>
+                <label for="fieldEmail">E‑mail</label>
+                <input id="fieldEmail" name="email" type="email" placeholder="jij@voorbeeld.nl" />
+              </div>
+              <div>
+                <label for="fieldPhone">Telefoon</label>
+                <input id="fieldPhone" name="phone" placeholder="+31..." />
+              </div>
+            </div>
+            <div class="grid-2">
+              <div>
+                <label for="fieldLinkedIn">LinkedIn</label>
+                <input id="fieldLinkedIn" name="linkedin" placeholder="https://linkedin.com/in/..." />
+              </div>
+              <div>
+                <label for="fieldInstagram">Instagram</label>
+                <input id="fieldInstagram" name="instagram" placeholder="https://instagram.com/..." />
+              </div>
+            </div>
+            <div class="grid-2">
+              <div>
+                <label for="fieldX">X (Twitter)</label>
+                <input id="fieldX" name="x" placeholder="https://x.com/..." />
+              </div>
+              <div aria-hidden="true"></div>
             </div>
             <div>
-              <label>Telefoon</label>
-              <input name="phone" placeholder="+31..." />
-            </div>
-          </div>
-          <div class="grid-2">
-            <div>
-              <label>LinkedIn</label>
-              <input name="linkedin" placeholder="https://linkedin.com/in/..." />
+              <label for="fieldAvatar">Profielfoto (URL)</label>
+              <input id="fieldAvatar" name="avatar" placeholder="https://...jpg" />
             </div>
             <div>
-              <label>Instagram</label>
-              <input name="instagram" placeholder="https://instagram.com/..." />
+              <label for="fieldBio">Korte bio / tagline</label>
+              <textarea id="fieldBio" name="bio" rows="3" placeholder="Wat doe jij?"></textarea>
             </div>
+            <div class="row">
+              <button id="btnGenerate" type="button">Genereer tagline met AI</button>
+              <span class="pill">OpenAI-sleutel vereist</span>
+            </div>
+          </form>
+          <div class="notice" role="status">
+            Configureer het endpoint <code>/api/generate</code> met een OpenAI-sleutel om automatisch een tagline te genereren.
           </div>
-          <div>
-            <label>Profielfoto (URL)</label>
-            <input name="avatar" placeholder="https://...jpg" />
-          </div>
-          <div>
-            <label>Korte bio / tagline</label>
-            <textarea name="bio" rows="3" placeholder="Wat doe jij?"></textarea>
-          </div>
-          <div class="row">
-            <button type="button" id="btnGenerate">Genereer met AI</button>
-            <span class="pill muted">Opslaan: automatisch</span>
-          </div>
-        </form>
-        <footer class="notice" style="margin-top:14px">
-          <strong>Let op:</strong> De knop <em>Genereer met AI</em> verwacht een serverless endpoint op <code>/api/generate</code> (bijv. Vercel/Netlify) dat jouw OpenAI‑sleutel gebruikt. Zie het commentaar in de code hieronder.
-        </footer>
-      </section>
-    </main>
+        </section>
+      </main>
 
-    <footer style="margin-top:18px" class="muted">Made for Codex: laat deze repo door Codex uitbreiden met hosting, serverless functions en CI.</footer>
-  </div>
+      <footer>
+        <p>
+          Bewaar je wijzigingen lokaal en deel je kaart. De AI-functie gebruikt het serverless endpoint met
+          <code>OPENAI_API_KEY</code>.
+        </p>
+      </footer>
+    </div>
 
-<script>
-  const form = document.getElementById('editForm');
-  const fields = ['name','title','company','website','email','phone','linkedin','instagram','avatar','bio'];
-  const els = Object.fromEntries(fields.map(n => [n, form.elements[n]]));
-  const preview = {
-    name: document.getElementById('namePreview'),
-    title: document.getElementById('titlePreview'),
-    company: document.getElementById('companyPreview'),
-    emailLink: document.getElementById('emailLink'),
-    telLink: document.getElementById('telLink'),
-    webLink: document.getElementById('webLink'),
-    liLink: document.getElementById('liLink'),
-    igLink: document.getElementById('igLink'),
-    avatar: document.getElementById('avatarPreview'),
-    tagline: document.getElementById('tagline')
-  };
-
-  function load(){
-    try{
-      const data = JSON.parse(localStorage.getItem('card:data')||'{}');
-      fields.forEach(k=>{ if(data[k]) els[k].value = data[k]; });
-      render();
-    }catch(e){ console.warn(e); }
-  }
-
-  function save(){
-    const data = Object.fromEntries(fields.map(k=>[k, els[k].value.trim()]));
-    localStorage.setItem('card:data', JSON.stringify(data));
-  }
-
-  function render(){
-    const d = Object.fromEntries(fields.map(k=>[k, els[k].value.trim()]));
-    preview.name.textContent = d.name || 'Jouw Naam';
-    preview.title.textContent = d.title || 'Functie';
-    preview.company.textContent = d.company || 'Bedrijf';
-    preview.emailLink.href = d.email ? `mailto:${d.email}` : '#';
-    preview.telLink.href = d.phone ? `tel:${d.phone}` : '#';
-    preview.webLink.href = d.website || '#';
-    preview.liLink.href = d.linkedin || '#';
-    preview.igLink.href = d.instagram || '#';
-    preview.avatar.src = d.avatar || 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="88" height="88"><rect width="100%" height="100%" fill="#0f1218"/><text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" fill="#2e3440" font-family="Arial" font-size="12">Foto</text></svg>`);
-    preview.tagline.textContent = d.bio || '';
-  }
-
-  form.addEventListener('input', ()=>{ save(); render(); });
-
-  document.getElementById('btnVCard').addEventListener('click', ()=>{
-    const d = Object.fromEntries(fields.map(k=>[k, els[k].value.trim()]));
-    const v = [
-      'BEGIN:VCARD','VERSION:3.0',
-      `FN:${d.name}`,
-      `ORG:${d.company}`,
-      `TITLE:${d.title}`,
-      d.email?`EMAIL;TYPE=INTERNET:${d.email}`:'',
-      d.phone?`TEL;TYPE=CELL:${d.phone}`:'',
-      d.website?`URL:${d.website}`:'',
-      'END:VCARD'
-    ].filter(Boolean).join('\n');
-    const blob = new Blob([v], {type:'text/vcard'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'visitekaart.vcf';
-    a.click();
-    URL.revokeObjectURL(a.href);
-  });
-
-  document.getElementById('btnShare').addEventListener('click', async ()=>{
-    const url = location.href.split('#')[0];
-    const d = Object.fromEntries(fields.map(k=>[k, els[k].value.trim()]));
-    const text = `${d.name} — ${d.title} @ ${d.company}`;
-    try{
-      if(navigator.share){ await navigator.share({title: document.title, text, url}); }
-      else{ await navigator.clipboard.writeText(url); alert('Link gekopieerd naar klembord'); }
-    }catch(e){ console.warn(e); }
-  });
-
-  document.getElementById('btnGenerate').addEventListener('click', async ()=>{
-    const d = Object.fromEntries(fields.map(k=>[k, els[k].value.trim()]));
-    try{
-      const r = await fetch('/api/generate', {
-        method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ name: d.name, title: d.title, company: d.company, website: d.website, tone: 'vriendelijk, beknopt' })
-      });
-      const j = await r.json();
-      els.bio.value = j.text || j.output || '';
-      save(); render();
-    }catch(err){
-      alert('Kon niet genereren. Configureer een serverless endpoint op /api/generate met jouw OpenAI‑sleutel.');
-      console.error(err);
-    }
-  });
-
-  /*
-    === Serverless voorbeeld (Vercel /api/generate) ===
-
-    // Bestand: api/generate.js
-    import OpenAI from 'openai';
-    const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
-    export default async function handler(req, res){
-      const { name, title, company, website, tone } = req.body || {};
-      const userText = `Schrijf 1 korte, pakkende tagline (max 18 woorden) voor een digitale visitekaart van ${name||'iemand'}, ${title||''} bij ${company||''}. Toon: ${tone||'vriendelijk, professioneel'}.`;
-
-      // Optie A: Responses API (aanbevolen in 2025)
-      // const r = await client.responses.create({ model: 'gpt-4.1-mini', input: [{ role: 'user', content: userText }] });
-      // const text = r.output_text; // of een vergelijkbaar veld
-
-      // Optie B: Chat Completions API (fallback)
-      const r = await client.chat.completions.create({
-        model: 'gpt-4o-mini',
-        messages: [
-          { role: 'system', content: 'Je bent een copywriter die ultrakorte taglines schrijft.' },
-          { role: 'user', content: userText }
-        ]
-      });
-      const text = r.choices?.[0]?.message?.content?.trim();
-      res.status(200).json({ text });
-    }
-
-    Zet in Vercel een environment variable: OPENAI_API_KEY.
-    Laat Codex desgewenst deze endpoint omzetten naar de Responses API.
-  */
-
-  load();
-</script>
-</body>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>
