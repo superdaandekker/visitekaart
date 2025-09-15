@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digitale Visitekaart – Welkom</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #05070d;
+      --bg-gradient: linear-gradient(180deg, #05070d 0%, #0b0f17 100%);
+      --card: #11151f;
+      --surface: rgba(255, 255, 255, 0.06);
+      --ink: #f1f5f9;
+      --muted: #97a3b6;
+      --accent: #6ee7b7;
+      --accent-ink: #041410;
+      --border: #1f2a37;
+      --shadow: 0 24px 40px rgba(5, 11, 22, 0.4);
+    }
+
+    .light {
+      color-scheme: light;
+      --bg: #f6f7fb;
+      --bg-gradient: linear-gradient(180deg, #ffffff 0%, #e8ecf5 100%);
+      --card: #ffffff;
+      --surface: rgba(15, 23, 42, 0.08);
+      --ink: #071424;
+      --muted: #5b6576;
+      --accent: #2563eb;
+      --accent-ink: #f8fbff;
+      --border: #d6ddeb;
+      --shadow: 0 22px 30px rgba(15, 23, 42, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button,
+    a,
+    input,
+    textarea {
+      transition: outline-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    button {
+      cursor: pointer;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      padding: 10px 16px;
+    }
+
+    button:hover {
+      border-color: var(--accent);
+    }
+
+    .button-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: 12px;
+      background: var(--accent);
+      color: var(--accent-ink);
+      border: 1px solid transparent;
+      padding: 10px 16px;
+      text-decoration: none;
+    }
+
+    .button-primary:hover {
+      filter: brightness(1.05);
+      border-color: transparent;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .auth-shell {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+
+    .auth-card {
+      max-width: 420px;
+    }
+
+    .auth-header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    .auth-header p {
+      margin: 6px 0 18px;
+    }
+
+    .tablist {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      background: var(--surface);
+      border-radius: 999px;
+      padding: 4px;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      border: none;
+      background: transparent;
+      padding: 10px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+    }
+
+    .tab.active {
+      background: var(--card);
+      color: var(--ink);
+      border: 1px solid var(--border);
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(5, 8, 16, 0.45);
+      color: var(--ink);
+    }
+
+    .light input,
+    .light textarea {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .switch {
+      margin: 8px 0 0;
+      font-size: 0.9rem;
+    }
+
+    .error {
+      margin: 16px 0 0;
+      min-height: 1.2rem;
+      color: #fca5a5;
+    }
+
+    .disclaimer {
+      margin-top: 12px;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-shell">
+    <section class="card auth-card" aria-labelledby="authTitle">
+      <header class="auth-header">
+        <h1 id="authTitle">Welkom bij Digitale Visitekaart</h1>
+        <p class="muted">Maak gratis je kaart in 1 minuut.</p>
+      </header>
+
+      <div class="tablist" role="tablist" aria-label="Authenticatie">
+        <button type="button" class="tab active" role="tab" aria-selected="true" aria-controls="loginPanel" id="tabLogin" data-target="loginPanel">Inloggen</button>
+        <button type="button" class="tab" role="tab" aria-selected="false" aria-controls="registerPanel" id="tabRegister" data-target="registerPanel">Account aanmaken</button>
+      </div>
+
+      <div>
+        <form id="loginForm" class="auth-form" role="tabpanel" aria-labelledby="tabLogin" data-panel="loginPanel" novalidate>
+          <div class="field">
+            <label for="loginEmail">E-mailadres</label>
+            <input id="loginEmail" name="email" type="email" required autocomplete="email" placeholder="jij@voorbeeld.nl" />
+          </div>
+          <div class="field">
+            <label for="loginPassword">Wachtwoord</label>
+            <input id="loginPassword" name="password" type="password" minlength="6" autocomplete="current-password" placeholder="••••••" />
+          </div>
+          <button type="submit" class="button-primary">Inloggen</button>
+          <p class="switch muted">Nog geen account? <a href="#" data-switch="registerPanel">Registreer gratis</a></p>
+        </form>
+
+        <form id="registerForm" class="auth-form" role="tabpanel" aria-labelledby="tabRegister" data-panel="registerPanel" hidden novalidate>
+          <div class="field">
+            <label for="registerEmail">E-mailadres</label>
+            <input id="registerEmail" name="email" type="email" required autocomplete="email" placeholder="jij@voorbeeld.nl" />
+          </div>
+          <div class="field">
+            <label for="registerPassword">Wachtwoord</label>
+            <input id="registerPassword" name="password" type="password" minlength="6" required autocomplete="new-password" placeholder="Minimaal 6 tekens" />
+          </div>
+          <button type="submit" class="button-primary">Account aanmaken</button>
+          <p class="switch muted">Heb je al een account? <a href="#" data-switch="loginPanel">Inloggen</a></p>
+        </form>
+      </div>
+
+      <p id="authError" class="error" role="status" aria-live="polite"></p>
+      <p class="disclaimer muted">Demo-login zonder backend.</p>
+    </section>
+  </div>
+
+  <script>
+    const tabButtons = Array.from(document.querySelectorAll('.tablist [role="tab"]'));
+    const panels = Array.from(document.querySelectorAll('[data-panel]'));
+    const errorEl = document.getElementById('authError');
+
+    function activatePanel(panelId) {
+      tabButtons.forEach((btn) => {
+        const isActive = btn.dataset.target === panelId;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        btn.setAttribute('tabindex', isActive ? '0' : '-1');
+      });
+
+      panels.forEach((panel) => {
+        const isActive = panel.dataset.panel === panelId;
+        panel.hidden = !isActive;
+      });
+
+      errorEl.textContent = '';
+
+      const focusTarget = panelId === 'loginPanel'
+        ? document.getElementById('loginEmail')
+        : document.getElementById('registerEmail');
+      window.requestAnimationFrame(() => focusTarget.focus());
+    }
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        activatePanel(btn.dataset.target);
+      });
+    });
+
+    document.querySelectorAll('[data-switch]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        const target = link.getAttribute('data-switch');
+        if (target) {
+          activatePanel(target);
+        }
+      });
+    });
+
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+
+    loginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      errorEl.textContent = '';
+
+      const emailInput = loginForm.elements.email;
+      const email = emailInput.value.trim();
+
+      if (!email) {
+        errorEl.textContent = 'Vul je e-mailadres in.';
+        emailInput.focus();
+        return;
+      }
+
+      if (!emailInput.checkValidity()) {
+        errorEl.textContent = 'Vul een geldig e-mailadres in.';
+        emailInput.focus();
+        return;
+      }
+
+      localStorage.setItem('user:email', email);
+      window.location.href = 'index.html';
+    });
+
+    registerForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      errorEl.textContent = '';
+
+      const emailInput = registerForm.elements.email;
+      const passwordInput = registerForm.elements.password;
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+
+      if (!email) {
+        errorEl.textContent = 'Vul een geldig e-mailadres in.';
+        emailInput.focus();
+        return;
+      }
+
+      if (!emailInput.checkValidity()) {
+        errorEl.textContent = emailInput.validationMessage || 'Vul een geldig e-mailadres in.';
+        emailInput.focus();
+        return;
+      }
+
+      if (password.length < 6) {
+        errorEl.textContent = 'Kies een wachtwoord van minimaal 6 tekens.';
+        passwordInput.focus();
+        return;
+      }
+
+      localStorage.setItem('user:email', email);
+      window.location.href = 'index.html';
+    });
+
+    activatePanel('loginPanel');
+  </script>
+</body>
+</html>

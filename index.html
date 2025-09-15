@@ -3,259 +3,663 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Digitale Visitekaart – Starter</title>
+  <title>Digitale Visitekaart – Mijn kaart</title>
+  <script>
+    if (!localStorage.getItem('user:email')) {
+      window.location.replace('home.html');
+    }
+  </script>
   <style>
-    :root{--bg:#0b0c10;--card:#111317;--ink:#e6e6e6;--muted:#9aa3af;--accent:#6ee7b7;--border:#1f242d}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Ubuntu,"Helvetica Neue",Arial,sans-serif;background:linear-gradient(180deg,#0b0c10, #0e1016);color:var(--ink)}
-    .wrap{max-width:1100px;margin:auto;padding:24px}
-    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:18px}
-    header h1{font-size:22px;margin:0}
-    header .actions{display:flex;gap:10px}
-    button{background:var(--card);color:var(--ink);border:1px solid var(--border);padding:10px 14px;border-radius:12px;cursor:pointer}
-    button:hover{border-color:#2b3340}
-    main{display:grid;grid-template-columns:1.1fr 1fr;gap:20px}
-    @media (max-width:960px){main{grid-template-columns:1fr;}}
-    .card{background:radial-gradient(1200px 500px at 10% -10%,rgba(110,231,183,.15),transparent),var(--card);border:1px solid var(--border);border-radius:20px;padding:22px;position:relative;overflow:hidden}
-    .preview{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
-    .avatar{width:88px;height:88px;border-radius:18px;border:1px solid var(--border);object-fit:cover;background:#0f1218}
-    .name{font-weight:700;font-size:20px}
-    .title{color:var(--muted);font-size:14px}
-    .company{font-size:14px;color:var(--muted)}
-    .contact{display:flex;gap:14px;margin-top:10px;flex-wrap:wrap}
-    .contact a{color:var(--accent);text-decoration:none}
-    .muted{color:var(--muted)}
-    form{display:grid;gap:12px}
-    label{font-size:13px;color:var(--muted)}
-    input, textarea{width:100%;padding:10px 12px;background:#0e1219;color:var(--ink);border:1px solid var(--border);border-radius:12px}
-    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .row{display:flex;gap:10px;flex-wrap:wrap}
-    .pill{font-size:12px;padding:6px 10px;border:1px solid var(--border);border-radius:999px}
-    footer{margin-top:8px;font-size:12px;color:var(--muted)}
-    .notice{border-left:3px solid var(--accent);background:#0e1513;padding:10px 12px;border-radius:10px}
+    :root {
+      color-scheme: dark;
+      --bg: #05070d;
+      --bg-gradient: linear-gradient(180deg, #05070d 0%, #0b0f17 100%);
+      --card: #11151f;
+      --surface: rgba(255, 255, 255, 0.06);
+      --ink: #f1f5f9;
+      --muted: #97a3b6;
+      --accent: #6ee7b7;
+      --accent-ink: #041410;
+      --border: #1f2a37;
+      --shadow: 0 24px 40px rgba(5, 11, 22, 0.4);
+    }
+
+    .light {
+      color-scheme: light;
+      --bg: #f6f7fb;
+      --bg-gradient: linear-gradient(180deg, #ffffff 0%, #e8ecf5 100%);
+      --card: #ffffff;
+      --surface: rgba(15, 23, 42, 0.08);
+      --ink: #071424;
+      --muted: #5b6576;
+      --accent: #2563eb;
+      --accent-ink: #f8fbff;
+      --border: #d6ddeb;
+      --shadow: 0 22px 30px rgba(15, 23, 42, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button,
+    a,
+    input,
+    textarea {
+      transition: outline-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    button {
+      cursor: pointer;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      padding: 10px 16px;
+    }
+
+    button:hover {
+      border-color: var(--accent);
+    }
+
+    .button-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: 12px;
+      background: var(--accent);
+      color: var(--accent-ink);
+      border: 1px solid transparent;
+      padding: 10px 16px;
+      text-decoration: none;
+    }
+
+    .button-primary:hover {
+      filter: brightness(1.05);
+      border-color: transparent;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 16px 0;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      border: none;
+      background: none;
+      color: var(--muted);
+      padding: 8px 14px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .nav-link:hover {
+      color: var(--ink);
+    }
+
+    .nav-link.active {
+      color: var(--ink);
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .nav-link.nav-link--button {
+      cursor: pointer;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    .page-header {
+      margin-bottom: 24px;
+    }
+
+    .page-header h1 {
+      margin: 0 0 8px;
+      font-size: 1.8rem;
+    }
+
+    .layout {
+      display: grid;
+      gap: 28px;
+    }
+
+    @media (min-width: 900px) {
+      .layout {
+        grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+        align-items: start;
+      }
+
+      .card--preview {
+        justify-self: center;
+      }
+
+      .card--stretch {
+        justify-self: stretch;
+      }
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .card--stretch {
+      max-width: none;
+      margin: 0;
+    }
+
+    .card-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .preview {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 88px;
+      height: 88px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .name {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    .title {
+      margin: 4px 0;
+      font-size: 0.95rem;
+    }
+
+    .company {
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .contact a {
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
+
+    .tagline {
+      margin-top: 18px;
+      line-height: 1.5;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(5, 8, 16, 0.45);
+      color: var(--ink);
+    }
+
+    .light input,
+    .light textarea {
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .grid-2 {
+      display: grid;
+      gap: 14px;
+    }
+
+    @media (min-width: 720px) {
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      font-size: 0.75rem;
+    }
+
+    .notice {
+      border-left: 3px solid var(--accent);
+      background: rgba(110, 231, 183, 0.1);
+      padding: 12px 16px;
+      border-radius: 14px;
+      margin-top: 18px;
+    }
+
+    .light .notice {
+      background: rgba(37, 99, 235, 0.1);
+    }
+
+    footer.page-footer {
+      margin-top: 32px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-align: center;
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <h1>Digitale Visitekaart – Starter</h1>
-      <div class="actions">
-        <button id="btnShare">Delen</button>
-        <button id="btnVCard">Download vCard</button>
-      </div>
+  <header class="topbar">
+    <a class="brand" href="card.html">Digitale Visitekaart</a>
+    <nav class="nav-links" aria-label="Primaire navigatie">
+      <a href="index.html" class="nav-link active">Mijn kaart</a>
+      <a href="card.html" class="nav-link">Publiek</a>
+      <button type="button" class="nav-link nav-link--button" id="logoutBtn" hidden>Uitloggen</button>
+    </nav>
+  </header>
+
+  <div class="container">
+    <header class="page-header">
+      <h1>Mijn kaart</h1>
+      <p class="muted">Bewerk je gegevens en deel je digitale visitekaart.</p>
     </header>
 
-    <main>
-      <section class="card" aria-labelledby="previewTitle">
-        <h2 id="previewTitle" class="muted" style="margin-top:0">Voorbeeldkaart</h2>
+    <main class="layout">
+      <section class="card card--preview" aria-labelledby="previewTitle">
+        <div class="card-header">
+          <h2 id="previewTitle" class="muted">Voorbeeldkaart</h2>
+          <div class="button-row">
+            <button type="button" id="btnShare">Delen</button>
+            <button type="button" id="btnVCard" class="button-primary">Download vCard</button>
+          </div>
+        </div>
         <div class="preview">
           <img id="avatarPreview" class="avatar" alt="Profielfoto" />
           <div>
-            <div class="name" id="namePreview">Jouw Naam</div>
-            <div class="title" id="titlePreview">Functie</div>
-            <div class="company" id="companyPreview">Bedrijf</div>
+            <p class="name" id="namePreview">Jouw Naam</p>
+            <p class="title muted" id="titlePreview">Functie</p>
+            <p class="company" id="companyPreview">Bedrijf</p>
             <div class="contact">
               <a href="#" id="emailLink">E‑mail</a>
               <a href="#" id="telLink">Telefoon</a>
               <a href="#" id="webLink">Website</a>
               <a href="#" id="liLink">LinkedIn</a>
               <a href="#" id="igLink">Instagram</a>
-              <a href="#" id="xLink">X</a>
             </div>
           </div>
         </div>
-        <p id="tagline" style="margin-top:16px"></p>
+        <p id="tagline" class="tagline" hidden></p>
       </section>
 
-      <section class="card" aria-labelledby="editTitle">
-        <h2 id="editTitle" class="muted" style="margin-top:0">Bewerken</h2>
+      <section class="card card--stretch" aria-labelledby="editTitle">
+        <div class="card-header">
+          <h2 id="editTitle" class="muted">Bewerken</h2>
+          <p class="muted" style="margin:0">Wijzigingen worden automatisch opgeslagen.</p>
+        </div>
         <form id="editForm">
           <div class="grid-2">
             <div>
-              <label>Naam</label>
-              <input name="name" placeholder="Jouw Naam" />
+              <label for="fieldName">Naam</label>
+              <input id="fieldName" name="name" placeholder="Jouw Naam" />
             </div>
             <div>
-              <label>Functie</label>
-              <input name="title" placeholder="Bijv. Founder" />
-            </div>
-          </div>
-          <div class="grid-2">
-            <div>
-              <label>Bedrijf</label>
-              <input name="company" placeholder="Bedrijfsnaam" />
-            </div>
-            <div>
-              <label>Website</label>
-              <input name="website" placeholder="https://..." />
+              <label for="fieldTitle">Functie</label>
+              <input id="fieldTitle" name="title" placeholder="Bijv. Founder" />
             </div>
           </div>
           <div class="grid-2">
             <div>
-              <label>E‑mail</label>
-              <input name="email" type="email" placeholder="jij@voorbeeld.nl" />
+              <label for="fieldCompany">Bedrijf</label>
+              <input id="fieldCompany" name="company" placeholder="Bedrijfsnaam" />
             </div>
             <div>
-              <label>Telefoon</label>
-              <input name="phone" placeholder="+31..." />
+              <label for="fieldWebsite">Website</label>
+              <input id="fieldWebsite" name="website" placeholder="https://..." />
             </div>
           </div>
           <div class="grid-2">
             <div>
-              <label>LinkedIn</label>
-              <input name="linkedin" placeholder="https://linkedin.com/in/..." />
+              <label for="fieldEmail">E‑mail</label>
+              <input id="fieldEmail" name="email" type="email" placeholder="jij@voorbeeld.nl" />
             </div>
             <div>
-              <label>Instagram</label>
-              <input name="instagram" placeholder="https://instagram.com/..." />
+              <label for="fieldPhone">Telefoon</label>
+              <input id="fieldPhone" name="phone" placeholder="+31..." />
+            </div>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label for="fieldLinkedIn">LinkedIn</label>
+              <input id="fieldLinkedIn" name="linkedin" placeholder="https://linkedin.com/in/..." />
+            </div>
+            <div>
+              <label for="fieldInstagram">Instagram</label>
+              <input id="fieldInstagram" name="instagram" placeholder="https://instagram.com/..." />
             </div>
           </div>
           <div>
-            <label>Profielfoto (URL)</label>
-            <input name="avatar" placeholder="https://...jpg" />
+            <label for="fieldAvatar">Profielfoto (URL)</label>
+            <input id="fieldAvatar" name="avatar" placeholder="https://...jpg" />
           </div>
           <div>
-            <label>Korte bio / tagline</label>
-            <textarea name="bio" rows="3" placeholder="Wat doe jij?"></textarea>
+            <label for="fieldBio">Korte bio / tagline</label>
+            <textarea id="fieldBio" name="bio" rows="3" placeholder="Wat doe jij?"></textarea>
           </div>
           <div class="row">
             <button type="button" id="btnGenerate">Genereer met AI</button>
             <span class="pill muted">Opslaan: automatisch</span>
           </div>
         </form>
-        <footer class="notice" style="margin-top:14px">
-          <strong>Let op:</strong> De knop <em>Genereer met AI</em> verwacht een serverless endpoint op <code>/api/generate</code> (bijv. Vercel/Netlify) dat jouw OpenAI‑sleutel gebruikt. Zie het commentaar in de code hieronder.
-        </footer>
+        <div class="notice" role="note">
+          <strong>Let op:</strong> De knop <em>Genereer met AI</em> verwacht een serverless endpoint op <code>/api/generate</code> dat jouw OpenAI‑sleutel gebruikt. Zie het commentaar in de code hieronder.
+        </div>
       </section>
     </main>
 
-    <footer style="margin-top:18px" class="muted">Made for Codex: laat deze repo door Codex uitbreiden met hosting, serverless functions en CI.</footer>
+    <footer class="page-footer">Made for Codex: laat deze repo door Codex uitbreiden met hosting, serverless functies en CI.</footer>
   </div>
 
-<script>
-  const form = document.getElementById('editForm');
-  const fields = ['name','title','company','website','email','phone','linkedin','instagram','avatar','bio'];
-  const els = Object.fromEntries(fields.map(n => [n, form.elements[n]]));
-  const preview = {
-    name: document.getElementById('namePreview'),
-    title: document.getElementById('titlePreview'),
-    company: document.getElementById('companyPreview'),
-    emailLink: document.getElementById('emailLink'),
-    telLink: document.getElementById('telLink'),
-    webLink: document.getElementById('webLink'),
-    liLink: document.getElementById('liLink'),
-    igLink: document.getElementById('igLink'),
-    avatar: document.getElementById('avatarPreview'),
-    tagline: document.getElementById('tagline')
-  };
+  <script>
+    const logoutBtn = document.getElementById('logoutBtn');
+    const storedEmail = localStorage.getItem('user:email');
+    if (storedEmail) {
+      logoutBtn.hidden = false;
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('user:email');
+        window.location.replace('home.html');
+      });
+    }
 
-  function load(){
-    try{
-      const data = JSON.parse(localStorage.getItem('card:data')||'{}');
-      fields.forEach(k=>{ if(data[k]) els[k].value = data[k]; });
+    const form = document.getElementById('editForm');
+    const fields = ['name', 'title', 'company', 'website', 'email', 'phone', 'linkedin', 'instagram', 'avatar', 'bio'];
+    const els = {
+      name: document.getElementById('fieldName'),
+      title: document.getElementById('fieldTitle'),
+      company: document.getElementById('fieldCompany'),
+      website: document.getElementById('fieldWebsite'),
+      email: document.getElementById('fieldEmail'),
+      phone: document.getElementById('fieldPhone'),
+      linkedin: document.getElementById('fieldLinkedIn'),
+      instagram: document.getElementById('fieldInstagram'),
+      avatar: document.getElementById('fieldAvatar'),
+      bio: document.getElementById('fieldBio')
+    };
+
+    const preview = {
+      name: document.getElementById('namePreview'),
+      title: document.getElementById('titlePreview'),
+      company: document.getElementById('companyPreview'),
+      emailLink: document.getElementById('emailLink'),
+      telLink: document.getElementById('telLink'),
+      webLink: document.getElementById('webLink'),
+      liLink: document.getElementById('liLink'),
+      igLink: document.getElementById('igLink'),
+      avatar: document.getElementById('avatarPreview'),
+      tagline: document.getElementById('tagline')
+    };
+
+    function load() {
+      try {
+        const data = JSON.parse(localStorage.getItem('card:data') || '{}');
+        fields.forEach((key) => {
+          if (data[key]) {
+            els[key].value = data[key];
+          }
+        });
+        render();
+      } catch (error) {
+        console.warn(error);
+      }
+    }
+
+    function save() {
+      const data = Object.fromEntries(fields.map((key) => [key, els[key].value.trim()]));
+      localStorage.setItem('card:data', JSON.stringify(data));
+    }
+
+    function render() {
+      const data = Object.fromEntries(fields.map((key) => [key, els[key].value.trim()]));
+      preview.name.textContent = data.name || 'Jouw Naam';
+      preview.title.textContent = data.title || 'Functie';
+      preview.company.textContent = data.company || 'Bedrijf';
+      preview.emailLink.href = data.email ? `mailto:${data.email}` : '#';
+      preview.emailLink.textContent = data.email || 'E‑mail';
+      preview.telLink.href = data.phone ? `tel:${data.phone}` : '#';
+      preview.telLink.textContent = data.phone || 'Telefoon';
+      preview.webLink.href = data.website || '#';
+      preview.webLink.textContent = data.website || 'Website';
+      preview.liLink.href = data.linkedin || '#';
+      preview.liLink.textContent = data.linkedin || 'LinkedIn';
+      preview.igLink.href = data.instagram || '#';
+      preview.igLink.textContent = data.instagram || 'Instagram';
+      const fallbackAvatar = 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="88" height="88"><rect width="100%" height="100%" fill="#0f1218"/><text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" fill="#2e3440" font-family="Arial" font-size="12">Foto</text></svg>`);
+      preview.avatar.src = data.avatar || fallbackAvatar;
+      if (data.bio) {
+        preview.tagline.textContent = data.bio;
+        preview.tagline.hidden = false;
+      } else {
+        preview.tagline.textContent = '';
+        preview.tagline.hidden = true;
+      }
+    }
+
+    form.addEventListener('input', () => {
+      save();
       render();
-    }catch(e){ console.warn(e); }
-  }
+    });
 
-  function save(){
-    const data = Object.fromEntries(fields.map(k=>[k, els[k].value.trim()]));
-    localStorage.setItem('card:data', JSON.stringify(data));
-  }
+    document.getElementById('btnVCard').addEventListener('click', () => {
+      const data = Object.fromEntries(fields.map((key) => [key, els[key].value.trim()]));
+      const vcard = [
+        'BEGIN:VCARD',
+        'VERSION:3.0',
+        `FN:${data.name}`,
+        `ORG:${data.company}`,
+        `TITLE:${data.title}`,
+        data.email ? `EMAIL;TYPE=INTERNET:${data.email}` : '',
+        data.phone ? `TEL;TYPE=CELL:${data.phone}` : '',
+        data.website ? `URL:${data.website}` : '',
+        'END:VCARD'
+      ].filter(Boolean).join('\n');
+      const blob = new Blob([vcard], { type: 'text/vcard' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'visitekaart.vcf';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    });
 
-  function render(){
-    const d = Object.fromEntries(fields.map(k=>[k, els[k].value.trim()]));
-    preview.name.textContent = d.name || 'Jouw Naam';
-    preview.title.textContent = d.title || 'Functie';
-    preview.company.textContent = d.company || 'Bedrijf';
-    preview.emailLink.href = d.email ? `mailto:${d.email}` : '#';
-    preview.telLink.href = d.phone ? `tel:${d.phone}` : '#';
-    preview.webLink.href = d.website || '#';
-    preview.liLink.href = d.linkedin || '#';
-    preview.igLink.href = d.instagram || '#';
-    preview.avatar.src = d.avatar || 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="88" height="88"><rect width="100%" height="100%" fill="#0f1218"/><text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" fill="#2e3440" font-family="Arial" font-size="12">Foto</text></svg>`);
-    preview.tagline.textContent = d.bio || '';
-  }
+    document.getElementById('btnShare').addEventListener('click', async () => {
+      const shareUrl = new URL('card.html', window.location.href).href;
+      const data = Object.fromEntries(fields.map((key) => [key, els[key].value.trim()]));
+      const shareParts = [];
+      if (data.name) shareParts.push(data.name);
+      if (data.title) shareParts.push(data.title);
+      if (data.company) shareParts.push(`@ ${data.company}`);
+      const text = shareParts.join(' ') || 'Mijn digitale visitekaart';
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: document.title, text, url: shareUrl });
+        } else if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(shareUrl);
+          alert('Link naar je publieke kaart is gekopieerd naar het klembord.');
+        } else {
+          window.prompt('Kopieer deze link naar je kaart:', shareUrl);
+        }
+      } catch (error) {
+        console.warn(error);
+      }
+    });
 
-  form.addEventListener('input', ()=>{ save(); render(); });
+    document.getElementById('btnGenerate').addEventListener('click', async () => {
+      const data = Object.fromEntries(fields.map((key) => [key, els[key].value.trim()]));
+      try {
+        const response = await fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: data.name,
+            title: data.title,
+            company: data.company,
+            website: data.website,
+            tone: 'vriendelijk, beknopt'
+          })
+        });
+        const json = await response.json();
+        els.bio.value = json.text || json.output || '';
+        save();
+        render();
+      } catch (error) {
+        alert('Kon niet genereren. Configureer een serverless endpoint op /api/generate met jouw OpenAI‑sleutel.');
+        console.error(error);
+      }
+    });
 
-  document.getElementById('btnVCard').addEventListener('click', ()=>{
-    const d = Object.fromEntries(fields.map(k=>[k, els[k].value.trim()]));
-    const v = [
-      'BEGIN:VCARD','VERSION:3.0',
-      `FN:${d.name}`,
-      `ORG:${d.company}`,
-      `TITLE:${d.title}`,
-      d.email?`EMAIL;TYPE=INTERNET:${d.email}`:'',
-      d.phone?`TEL;TYPE=CELL:${d.phone}`:'',
-      d.website?`URL:${d.website}`:'',
-      'END:VCARD'
-    ].filter(Boolean).join('\n');
-    const blob = new Blob([v], {type:'text/vcard'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'visitekaart.vcf';
-    a.click();
-    URL.revokeObjectURL(a.href);
-  });
+    /*
+      === Serverless voorbeeld (Vercel /api/generate) ===
 
-  document.getElementById('btnShare').addEventListener('click', async ()=>{
-    const url = location.href.split('#')[0];
-    const d = Object.fromEntries(fields.map(k=>[k, els[k].value.trim()]));
-    const text = `${d.name} — ${d.title} @ ${d.company}`;
-    try{
-      if(navigator.share){ await navigator.share({title: document.title, text, url}); }
-      else{ await navigator.clipboard.writeText(url); alert('Link gekopieerd naar klembord'); }
-    }catch(e){ console.warn(e); }
-  });
+      // Bestand: api/generate.js
+      import OpenAI from 'openai';
+      const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-  document.getElementById('btnGenerate').addEventListener('click', async ()=>{
-    const d = Object.fromEntries(fields.map(k=>[k, els[k].value.trim()]));
-    try{
-      const r = await fetch('/api/generate', {
-        method: 'POST', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ name: d.name, title: d.title, company: d.company, website: d.website, tone: 'vriendelijk, beknopt' })
-      });
-      const j = await r.json();
-      els.bio.value = j.text || j.output || '';
-      save(); render();
-    }catch(err){
-      alert('Kon niet genereren. Configureer een serverless endpoint op /api/generate met jouw OpenAI‑sleutel.');
-      console.error(err);
-    }
-  });
+      export default async function handler(req, res){
+        const { name, title, company, website, tone } = req.body || {};
+        const userText = `Schrijf 1 korte, pakkende tagline (max 18 woorden) voor een digitale visitekaart van ${name||'iemand'}, ${title||''} bij ${company||''}. Toon: ${tone||'vriendelijk, professioneel'}.`;
 
-  /*
-    === Serverless voorbeeld (Vercel /api/generate) ===
+        // Optie A: Responses API (aanbevolen in 2025)
+        // const r = await client.responses.create({ model: 'gpt-4.1-mini', input: [{ role: 'user', content: userText }] });
+        // const text = r.output_text; // of een vergelijkbaar veld
 
-    // Bestand: api/generate.js
-    import OpenAI from 'openai';
-    const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+        // Optie B: Chat Completions API (fallback)
+        const r = await client.chat.completions.create({
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: 'Je bent een copywriter die ultrakorte taglines schrijft.' },
+            { role: 'user', content: userText }
+          ]
+        });
+        const text = r.choices?.[0]?.message?.content?.trim();
+        res.status(200).json({ text });
+      }
 
-    export default async function handler(req, res){
-      const { name, title, company, website, tone } = req.body || {};
-      const userText = `Schrijf 1 korte, pakkende tagline (max 18 woorden) voor een digitale visitekaart van ${name||'iemand'}, ${title||''} bij ${company||''}. Toon: ${tone||'vriendelijk, professioneel'}.`;
+      Zet in Vercel een environment variable: OPENAI_API_KEY.
+      Laat Codex desgewenst deze endpoint omzetten naar de Responses API.
+    */
 
-      // Optie A: Responses API (aanbevolen in 2025)
-      // const r = await client.responses.create({ model: 'gpt-4.1-mini', input: [{ role: 'user', content: userText }] });
-      // const text = r.output_text; // of een vergelijkbaar veld
-
-      // Optie B: Chat Completions API (fallback)
-      const r = await client.chat.completions.create({
-        model: 'gpt-4o-mini',
-        messages: [
-          { role: 'system', content: 'Je bent een copywriter die ultrakorte taglines schrijft.' },
-          { role: 'user', content: userText }
-        ]
-      });
-      const text = r.choices?.[0]?.message?.content?.trim();
-      res.status(200).json({ text });
-    }
-
-    Zet in Vercel een environment variable: OPENAI_API_KEY.
-    Laat Codex desgewenst deze endpoint omzetten naar de Responses API.
-  */
-
-  load();
-</script>
+    load();
+  </script>
 </body>
 </html>

@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digitale Visitekaart – Publieke kaart</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #05070d;
+      --bg-gradient: linear-gradient(180deg, #05070d 0%, #0b0f17 100%);
+      --card: #11151f;
+      --surface: rgba(255, 255, 255, 0.06);
+      --ink: #f1f5f9;
+      --muted: #97a3b6;
+      --accent: #6ee7b7;
+      --accent-ink: #041410;
+      --border: #1f2a37;
+      --shadow: 0 24px 40px rgba(5, 11, 22, 0.4);
+    }
+
+    .light {
+      color-scheme: light;
+      --bg: #f6f7fb;
+      --bg-gradient: linear-gradient(180deg, #ffffff 0%, #e8ecf5 100%);
+      --card: #ffffff;
+      --surface: rgba(15, 23, 42, 0.08);
+      --ink: #071424;
+      --muted: #5b6576;
+      --accent: #2563eb;
+      --accent-ink: #f8fbff;
+      --border: #d6ddeb;
+      --shadow: 0 22px 30px rgba(15, 23, 42, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    button,
+    input,
+    textarea {
+      font: inherit;
+    }
+
+    button,
+    a,
+    input,
+    textarea {
+      transition: outline-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    button {
+      cursor: pointer;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      padding: 10px 16px;
+    }
+
+    button:hover {
+      border-color: var(--accent);
+    }
+
+    .button-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: 12px;
+      background: var(--accent);
+      color: var(--accent-ink);
+      border: 1px solid transparent;
+      padding: 10px 16px;
+      text-decoration: none;
+    }
+
+    .button-primary:hover {
+      filter: brightness(1.05);
+      border-color: transparent;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 16px 0;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .nav-link {
+      border: none;
+      background: none;
+      color: var(--muted);
+      padding: 8px 14px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .nav-link:hover {
+      color: var(--ink);
+    }
+
+    .nav-link.active {
+      color: var(--ink);
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .nav-link.nav-link--button {
+      cursor: pointer;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    .page-header {
+      margin-bottom: 24px;
+    }
+
+    .page-header h1 {
+      margin: 0 0 8px;
+      font-size: 1.8rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .card + .card {
+      margin-top: 24px;
+    }
+
+    .card-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .preview {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 88px;
+      height: 88px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .name {
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    .title {
+      margin: 4px 0;
+      font-size: 0.95rem;
+    }
+
+    .company {
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .tagline {
+      margin-top: 18px;
+      line-height: 1.5;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .details {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .details li {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .details .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .empty-state {
+      text-align: center;
+    }
+
+    .empty-state h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .empty-state p {
+      margin: 0 0 18px;
+    }
+
+    footer.page-footer {
+      margin-top: 32px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="card.html">Digitale Visitekaart</a>
+    <nav class="nav-links" aria-label="Primaire navigatie">
+      <a href="index.html" class="nav-link">Mijn kaart</a>
+      <a href="card.html" class="nav-link active">Publiek</a>
+      <button type="button" class="nav-link nav-link--button" id="logoutBtn" hidden>Uitloggen</button>
+    </nav>
+  </header>
+
+  <div class="container">
+    <header class="page-header">
+      <h1>Publieke kaart</h1>
+      <p class="muted">Deel deze pagina met je netwerk.</p>
+    </header>
+
+    <section class="card" id="cardPreview" aria-labelledby="publicTitle" hidden>
+      <div class="card-header">
+        <h2 id="publicTitle" class="muted">Jouw visitekaart</h2>
+        <div class="button-row">
+          <button type="button" id="publicShare">Delen</button>
+          <button type="button" id="publicVCard" class="button-primary">Download vCard</button>
+        </div>
+      </div>
+      <div class="preview">
+        <img id="publicAvatar" class="avatar" alt="Profielfoto" />
+        <div>
+          <p class="name" id="publicName"></p>
+          <p class="title muted" id="publicRole"></p>
+          <p class="company" id="publicCompany"></p>
+        </div>
+      </div>
+      <p id="publicBio" class="tagline" hidden></p>
+      <ul class="details">
+        <li data-field="email" hidden>
+          <span class="label">E-mail</span>
+          <a id="publicEmail" href="#"></a>
+        </li>
+        <li data-field="phone" hidden>
+          <span class="label">Telefoon</span>
+          <a id="publicPhone" href="#"></a>
+        </li>
+        <li data-field="website" hidden>
+          <span class="label">Website</span>
+          <a id="publicWebsite" href="#" target="_blank" rel="noopener"></a>
+        </li>
+        <li data-field="linkedin" hidden>
+          <span class="label">LinkedIn</span>
+          <a id="publicLinkedIn" href="#" target="_blank" rel="noopener"></a>
+        </li>
+        <li data-field="instagram" hidden>
+          <span class="label">Instagram</span>
+          <a id="publicInstagram" href="#" target="_blank" rel="noopener"></a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="card empty-state" id="emptyState" hidden>
+      <h2>Nog geen kaart gemaakt.</h2>
+      <p class="muted">Maak binnen 1 minuut je digitale visitekaart en deel hem met iedereen.</p>
+      <button type="button" class="button-primary" id="emptyCta">Maak je kaart</button>
+    </section>
+
+    <footer class="page-footer">Deel je kaart via deze publieke pagina.</footer>
+  </div>
+
+  <script>
+    const logoutBtn = document.getElementById('logoutBtn');
+    const storedEmail = localStorage.getItem('user:email');
+    if (storedEmail) {
+      logoutBtn.hidden = false;
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('user:email');
+        window.location.replace('home.html');
+      });
+    }
+
+    const cardSection = document.getElementById('cardPreview');
+    const emptyState = document.getElementById('emptyState');
+    const emptyCta = document.getElementById('emptyCta');
+    emptyCta.addEventListener('click', () => {
+      window.location.href = 'index.html';
+    });
+
+    let data = {};
+    try {
+      data = JSON.parse(localStorage.getItem('card:data') || '{}');
+      if (!data || typeof data !== 'object') {
+        data = {};
+      } else {
+        data = Object.fromEntries(Object.entries(data).map(([key, value]) => [key, typeof value === 'string' ? value.trim() : value]));
+      }
+    } catch (error) {
+      console.warn(error);
+    }
+
+    const hasData = Object.values(data || {}).some((value) => typeof value === 'string' && value.trim() !== '');
+
+    if (!hasData) {
+      emptyState.hidden = false;
+    } else {
+      cardSection.hidden = false;
+      renderCard(data);
+    }
+
+    function renderCard(card) {
+      const fallbackAvatar = 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="88" height="88"><rect width="100%" height="100%" fill="#0f1218"/><text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" fill="#2e3440" font-family="Arial" font-size="12">Foto</text></svg>`);
+      const avatar = document.getElementById('publicAvatar');
+      avatar.src = card.avatar ? card.avatar.trim() : fallbackAvatar;
+      avatar.alt = card.name ? `Profielfoto van ${card.name}` : 'Profielfoto';
+
+      document.getElementById('publicName').textContent = card.name || 'Jouw Naam';
+
+      const roleEl = document.getElementById('publicRole');
+      if (card.title) {
+        roleEl.textContent = card.title;
+        roleEl.hidden = false;
+      } else {
+        roleEl.textContent = '';
+        roleEl.hidden = true;
+      }
+
+      const companyEl = document.getElementById('publicCompany');
+      if (card.company) {
+        companyEl.textContent = card.company;
+        companyEl.hidden = false;
+      } else {
+        companyEl.textContent = '';
+        companyEl.hidden = true;
+      }
+
+      const bioEl = document.getElementById('publicBio');
+      if (card.bio) {
+        bioEl.textContent = card.bio;
+        bioEl.hidden = false;
+      } else {
+        bioEl.textContent = '';
+        bioEl.hidden = true;
+      }
+
+      const detailMap = {
+        email: {
+          element: document.getElementById('publicEmail'),
+          wrapper: document.querySelector('[data-field="email"]'),
+          href: (value) => `mailto:${value}`
+        },
+        phone: {
+          element: document.getElementById('publicPhone'),
+          wrapper: document.querySelector('[data-field="phone"]'),
+          href: (value) => `tel:${value}`
+        },
+        website: {
+          element: document.getElementById('publicWebsite'),
+          wrapper: document.querySelector('[data-field="website"]'),
+          href: (value) => (/^https?:/i.test(value) ? value : `https://${value}`)
+        },
+        linkedin: {
+          element: document.getElementById('publicLinkedIn'),
+          wrapper: document.querySelector('[data-field="linkedin"]'),
+          href: (value) => (/^https?:/i.test(value) ? value : `https://${value}`)
+        },
+        instagram: {
+          element: document.getElementById('publicInstagram'),
+          wrapper: document.querySelector('[data-field="instagram"]'),
+          href: (value) => (/^https?:/i.test(value) ? value : `https://${value}`)
+        }
+      };
+
+      Object.entries(detailMap).forEach(([key, config]) => {
+        const raw = (card[key] || '').trim();
+        if (raw) {
+          config.element.textContent = raw;
+          config.element.href = config.href(raw);
+          config.wrapper.hidden = false;
+        } else {
+          config.element.textContent = '';
+          config.element.removeAttribute('href');
+          config.wrapper.hidden = true;
+        }
+      });
+    }
+
+    const downloadBtn = document.getElementById('publicVCard');
+    downloadBtn.addEventListener('click', () => {
+      const vcard = [
+        'BEGIN:VCARD',
+        'VERSION:3.0',
+        `FN:${data.name || ''}`,
+        `ORG:${data.company || ''}`,
+        `TITLE:${data.title || ''}`,
+        data.email ? `EMAIL;TYPE=INTERNET:${data.email}` : '',
+        data.phone ? `TEL;TYPE=CELL:${data.phone}` : '',
+        data.website ? `URL:${data.website}` : '',
+        'END:VCARD'
+      ].filter(Boolean).join('\n');
+      const blob = new Blob([vcard], { type: 'text/vcard' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'visitekaart.vcf';
+      link.click();
+      URL.revokeObjectURL(link.href);
+    });
+
+    const shareBtn = document.getElementById('publicShare');
+    shareBtn.addEventListener('click', async () => {
+      const shareUrl = window.location.href;
+      const title = data.name ? `${data.name} – Digitale Visitekaart` : 'Digitale Visitekaart';
+      const text = data.bio || 'Bekijk mijn digitale visitekaart.';
+      try {
+        if (navigator.share) {
+          await navigator.share({ title, text, url: shareUrl });
+        } else if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(shareUrl);
+          alert('Link naar deze kaart is gekopieerd naar het klembord.');
+        } else {
+          window.prompt('Kopieer deze link naar de kaart:', shareUrl);
+        }
+      } catch (error) {
+        console.warn(error);
+      }
+    });
+  </script>
+</body>
+</html>
