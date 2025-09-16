@@ -3,128 +3,100 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Digitale Visitekaart</title>
+    <title>Digitale Visitekaart - Aanmelden</title>
     <meta
       name="description"
-      content="Bouw en deel eenvoudig een digitale visitekaart met AI-taglines."
+      content="Meld je aan om je digitale visitekaart te bouwen en delen."
     />
-    <link rel="icon" href="/favicon.svg" />
-    <script>
-      if (!localStorage.getItem('user:email')) {
-        window.location.replace('home.html');
-      }
-    </script>
+    <link rel="icon" href="./favicon.svg" />
+    <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body>
-    <div class="wrap">
-      <header>
-        <h1>Digitale Visitekaart</h1>
-        <div class="actions">
-          <button id="btnLogout" type="button">Uitloggen</button>
-          <button id="btnShare" type="button">Delen</button>
-          <button id="btnVCard" type="button">Download vCard</button>
+  <body class="page-auth" data-page="auth">
+    <header class="site-header">
+      <div class="site-brand">
+        <a href="./index.html">Digitale Visitekaart</a>
+      </div>
+      <nav class="site-nav" aria-label="Hoofdmenu">
+        <a href="./index.html">Start</a>
+        <a href="./profile.html">Profiel</a>
+        <a href="./card.html">Kaart</a>
+        <a href="./dashboard.html">Dashboard</a>
+        <a href="./settings.html">Instellingen</a>
+        <a href="./privacy.html">Privacy</a>
+        <a href="./terms.html">Voorwaarden</a>
+        <a href="./cookies.html">Cookies</a>
+      </nav>
+    </header>
+    <div class="page-content">
+      <main class="auth-card">
+        <header>
+          <h1>Digitale Visitekaart</h1>
+          <p class="muted">Demo-login, geen echte backend.</p>
+        </header>
+
+        <div class="tabs" role="tablist" aria-label="Aanmelden">
+          <button id="tabLogin" type="button" role="tab" aria-selected="true" aria-controls="panelLogin">
+            Inloggen
+          </button>
+          <button
+            id="tabRegister"
+            type="button"
+            role="tab"
+            aria-selected="false"
+            aria-controls="panelRegister"
+            tabindex="-1"
+          >
+            Account aanmaken
+          </button>
         </div>
-      </header>
 
-      <main>
-        <section class="card" aria-labelledby="previewTitle">
-          <h2 id="previewTitle" class="muted">Voorbeeldkaart</h2>
-          <div class="preview">
-            <img id="avatarPreview" class="avatar" alt="Profielfoto" />
+        <section id="panelLogin" role="tabpanel" tabindex="0" aria-labelledby="tabLogin">
+          <form id="loginForm">
             <div>
-              <div class="name" id="namePreview">Jouw Naam</div>
-              <div class="title" id="titlePreview">Functie</div>
-              <div class="company" id="companyPreview">Bedrijf</div>
-              <div class="contact">
-                <a href="#" id="emailLink">E‑mail</a>
-                <a href="#" id="telLink">Telefoon</a>
-                <a href="#" id="webLink">Website</a>
-                <a href="#" id="liLink">LinkedIn</a>
-                <a href="#" id="igLink">Instagram</a>
-                <a href="#" id="xLink">X</a>
-              </div>
-            </div>
-          </div>
-          <p id="tagline"></p>
-        </section>
-
-        <section class="card" aria-labelledby="editTitle">
-          <h2 id="editTitle" class="muted">Bewerken</h2>
-          <form id="editForm">
-            <div class="grid-2">
-              <div>
-                <label for="fieldName">Naam</label>
-                <input id="fieldName" name="name" placeholder="Jouw Naam" />
-              </div>
-              <div>
-                <label for="fieldTitle">Functie</label>
-                <input id="fieldTitle" name="title" placeholder="Bijv. Founder" />
-              </div>
-            </div>
-            <div class="grid-2">
-              <div>
-                <label for="fieldCompany">Bedrijf</label>
-                <input id="fieldCompany" name="company" placeholder="Bedrijfsnaam" />
-              </div>
-              <div>
-                <label for="fieldWebsite">Website</label>
-                <input id="fieldWebsite" name="website" placeholder="https://..." />
-              </div>
-            </div>
-            <div class="grid-2">
-              <div>
-                <label for="fieldEmail">E‑mail</label>
-                <input id="fieldEmail" name="email" type="email" placeholder="jij@voorbeeld.nl" />
-              </div>
-              <div>
-                <label for="fieldPhone">Telefoon</label>
-                <input id="fieldPhone" name="phone" placeholder="+31..." />
-              </div>
-            </div>
-            <div class="grid-2">
-              <div>
-                <label for="fieldLinkedIn">LinkedIn</label>
-                <input id="fieldLinkedIn" name="linkedin" placeholder="https://linkedin.com/in/..." />
-              </div>
-              <div>
-                <label for="fieldInstagram">Instagram</label>
-                <input id="fieldInstagram" name="instagram" placeholder="https://instagram.com/..." />
-              </div>
-            </div>
-            <div class="grid-2">
-              <div>
-                <label for="fieldX">X (Twitter)</label>
-                <input id="fieldX" name="x" placeholder="https://x.com/..." />
-              </div>
-              <div aria-hidden="true"></div>
+              <label for="loginEmail">E-mail</label>
+              <input id="loginEmail" name="email" type="email" autocomplete="email" required />
             </div>
             <div>
-              <label for="fieldAvatar">Profielfoto (URL)</label>
-              <input id="fieldAvatar" name="avatar" placeholder="https://...jpg" />
+              <label for="loginPassword">Wachtwoord</label>
+              <input
+                id="loginPassword"
+                name="password"
+                type="password"
+                minlength="6"
+                autocomplete="current-password"
+                required
+              />
             </div>
-            <div>
-              <label for="fieldBio">Korte bio / tagline</label>
-              <textarea id="fieldBio" name="bio" rows="3" placeholder="Wat doe jij?"></textarea>
-            </div>
-            <div class="row">
-              <button id="btnGenerate" type="button">Genereer tagline met AI</button>
-              <span class="pill">OpenAI-sleutel vereist</span>
-            </div>
+            <button type="submit">Inloggen</button>
           </form>
-          <div class="notice" role="status">
-            Configureer het endpoint <code>/api/generate</code> met een OpenAI-sleutel om automatisch een tagline te genereren.
-          </div>
         </section>
-      </main>
 
-      <footer>
-        <p>
-          Bewaar je wijzigingen lokaal en deel je kaart. De AI-functie gebruikt het serverless endpoint met
-          <code>OPENAI_API_KEY</code>.
-        </p>
-      </footer>
+        <section id="panelRegister" role="tabpanel" tabindex="0" aria-labelledby="tabRegister" hidden>
+          <form id="registerForm">
+            <div>
+              <label for="registerEmail">E-mail</label>
+              <input id="registerEmail" name="email" type="email" autocomplete="email" required />
+            </div>
+            <div>
+              <label for="registerPassword">Wachtwoord</label>
+              <input
+                id="registerPassword"
+                name="password"
+                type="password"
+                minlength="6"
+                autocomplete="new-password"
+                required
+              />
+            </div>
+            <button type="submit">Account aanmaken</button>
+          </form>
+        </section>
+
+        <p class="info">We bewaren alleen jouw e-mailadres lokaal in je browser.</p>
+        <p id="statusMessage" class="status" role="status" aria-live="polite"></p>
+      </main>
     </div>
 
-    <script type="module" src="/src/main.ts"></script>
+    <script src="./app.js"></script>
   </body>
 </html>
