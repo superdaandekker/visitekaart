@@ -1,11 +1,6 @@
 {
-  "version": 2,
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "outputDirectory": "dist",
-  "framework": null,
   "functions": {
-    "api/*.ts": {
+    "api/**/*.js": {
       "runtime": "nodejs20.x"
     }
   }

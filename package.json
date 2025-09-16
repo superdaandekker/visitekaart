@@ -1,40 +1,9 @@
 {
   "name": "visitekaart",
   "version": "1.0.0",
-  "description": "Digitale visitekaart als statische webapp met serverless OpenAI-tagline.",
+  "private": true,
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0 --port 4173",
-    "lint": "eslint \"{src,api,tests}/**/*.{ts,tsx}\"",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
-  },
-  "keywords": [
-    "visitekaart",
-    "vercel",
-    "openai"
-  ],
-  "author": "",
-  "license": "MIT",
   "dependencies": {
-    "openai": "^5.20.3"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.35.0",
-    "@types/node": "^24.5.0",
-    "@typescript-eslint/eslint-plugin": "^8.44.0",
-    "@typescript-eslint/parser": "^8.44.0",
-    "@vercel/node": "^5.3.22",
-    "eslint": "^9.35.0",
-    "eslint-config-prettier": "^10.1.8",
-    "globals": "^16.4.0",
-    "prettier": "^3.6.2",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.5",
-    "vitest": "^3.2.4"
+    "openai": "^4.56.0"
   }
 }
