@@ -230,7 +230,7 @@ function handleLogout() {
   } catch (error) {
     console.warn('Kon user:email niet verwijderen', error);
   }
-  window.location.href = 'home.html';
+  window.location.href = './index.html';
 }
 
 async function handleGenerate() {
@@ -239,7 +239,7 @@ async function handleGenerate() {
   generateButton.textContent = 'Bezig...';
 
   try {
-    const response = await fetch('/api/generate', {
+    const response = await fetch('./api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
