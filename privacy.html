@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digitale Kaart – Privacy</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav">
+      <a class="site-title" href="privacy.html">Digitale Kaart</a>
+      <nav class="site-nav" aria-label="Hoofdnavigatie">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="index.html" data-auth-link class="active">Mijn kaart</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="page-intro">
+        <div class="actions">
+          <div class="stack">
+            <h1>Privacyverklaring</h1>
+            <p class="muted">We beschermen jouw gegevens en houden alles transparant.</p>
+          </div>
+          <button type="button" class="btn btn-secondary push-end" id="logoutBtn" hidden>Uitloggen</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-content">
+          <h2>Welke data slaan we op?</h2>
+          <p>Deze MVP draait volledig in je browser. We bewaren je kaartgegevens in <strong>localStorage</strong> zodat je wijzigingen behouden blijven. Er wordt geen cloud of externe database gebruikt.</p>
+          <p>De enige data die in deze demo wordt opgeslagen, zijn de velden die je zelf invult op de pagina “Mijn kaart”.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-content">
+          <h2>Hoe kun je data verwijderen?</h2>
+          <ul class="list-clean">
+            <li class="detail-item">
+              <span class="label">Via de app</span>
+              <p>Klik op <em>Uitloggen</em> om alle opgeslagen kaartgegevens te verwijderen.</p>
+            </li>
+            <li class="detail-item">
+              <span class="label">Via de browser</span>
+              <p>Wis je browserdata (localStorage) voor deze site om helemaal opnieuw te beginnen.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-content">
+          <h2>Contact</h2>
+          <p class="supporting-text">Heb je vragen over privacy of wil je feedback geven? Stuur gerust een bericht naar <a href="mailto:privacy@digitale-kaart.nl">privacy@digitale-kaart.nl</a>.</p>
+        </div>
+      </section>
+
+      <footer class="page-footer">Laat ons weten hoe we jouw privacy nog beter kunnen beschermen.</footer>
+    </div>
+  </main>
+
+  <script>
+    const logoutBtn = document.getElementById('logoutBtn');
+    const storedEmail = localStorage.getItem('user:email');
+    if (storedEmail) {
+      logoutBtn.hidden = false;
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('user:email');
+        window.location.replace('home.html');
+      });
+    }
+
+    const authLink = document.querySelector('[data-auth-link]');
+    if (authLink) {
+      authLink.setAttribute('href', storedEmail ? 'card.html' : 'index.html');
+    }
+  </script>
+</body>
+</html>

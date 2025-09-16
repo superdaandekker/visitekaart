@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digitale Kaart – Instellingen</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav">
+      <a class="site-title" href="settings.html">Digitale Kaart</a>
+      <nav class="site-nav" aria-label="Hoofdnavigatie">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="index.html" data-auth-link class="active">Mijn kaart</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="page-intro">
+        <div class="actions">
+          <div class="stack">
+            <h1>Instellingen</h1>
+            <p class="muted">Personaliseer je ervaring. Alle instellingen werken lokaal in deze demo.</p>
+          </div>
+          <button type="button" class="btn btn-secondary push-end" id="logoutBtn" hidden>Uitloggen</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h2>Voorkeuren</h2>
+            <p class="card-subtext">Stel weergave en notificaties af.</p>
+          </div>
+        </div>
+        <form class="card-content" aria-describedby="settingsNote">
+          <div>
+            <label for="themeSelect">Thema</label>
+            <select id="themeSelect" name="theme">
+              <option>Automatisch (volgt systeem)</option>
+              <option>Licht</option>
+              <option>Donker</option>
+            </select>
+          </div>
+          <div>
+            <label for="accentColor">Primaire kleur</label>
+            <input id="accentColor" name="accent" type="color" value="#2563eb" />
+          </div>
+          <div>
+            <label for="languageSelect">Taal</label>
+            <select id="languageSelect" name="language">
+              <option>Nederlands</option>
+              <option>Engels</option>
+              <option>Duits</option>
+            </select>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn">Instellingen opslaan</button>
+            <button type="button" class="btn btn-secondary">Reset</button>
+          </div>
+          <p id="settingsNote" class="supporting-text">Deze actie simuleert opslag; in een echte app worden voorkeuren gesynchroniseerd met je account.</p>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h2>Meldingen</h2>
+            <p class="card-subtext">Krijg updates over je kaart.</p>
+          </div>
+        </div>
+        <form class="card-content">
+          <div class="field-grid">
+            <label class="option">
+              <input type="checkbox" checked />
+              <span>E-mails bij nieuwe bezoeken</span>
+            </label>
+            <label class="option">
+              <input type="checkbox" />
+              <span>Wekelijks overzicht</span>
+            </label>
+            <label class="option">
+              <input type="checkbox" checked />
+              <span>Updates over nieuwe features</span>
+            </label>
+          </div>
+          <p class="supporting-text">Notificaties worden alleen gestuurd wanneer je backend is geconfigureerd.</p>
+        </form>
+      </section>
+
+      <footer class="page-footer">Instellingen worden lokaal onthouden tot je cookies wist.</footer>
+    </div>
+  </main>
+
+  <script>
+    const logoutBtn = document.getElementById('logoutBtn');
+    const storedEmail = localStorage.getItem('user:email');
+    if (storedEmail) {
+      logoutBtn.hidden = false;
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('user:email');
+        window.location.replace('home.html');
+      });
+    }
+
+    const authLink = document.querySelector('[data-auth-link]');
+    if (authLink) {
+      authLink.setAttribute('href', storedEmail ? 'card.html' : 'index.html');
+    }
+  </script>
+</body>
+</html>

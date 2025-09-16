@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digitale Kaart – Voorwaarden</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav">
+      <a class="site-title" href="terms.html">Digitale Kaart</a>
+      <nav class="site-nav" aria-label="Hoofdnavigatie">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="index.html" data-auth-link class="active">Mijn kaart</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="page-intro">
+        <div class="actions">
+          <div class="stack">
+            <h1>Gebruiksvoorwaarden</h1>
+            <p class="muted">Lees de basisafspraken voor het gebruik van deze digitale visitekaart.</p>
+          </div>
+          <button type="button" class="btn btn-secondary push-end" id="logoutBtn" hidden>Uitloggen</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-content">
+          <h2>1. Doel van de dienst</h2>
+          <p>Digitale Kaart is een MVP bedoeld om het concept te demonstreren. Je kunt je gegevens beheren en delen via de publieke kaart.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-content">
+          <h2>2. Eigendom van data</h2>
+          <p>Alle data die je invoert blijft van jou. Omdat de gegevens lokaal worden opgeslagen, heb je directe controle over wat er wordt bewaard.</p>
+          <p class="supporting-text">We hebben geen toegang tot jouw invoer; verwijder de data door uit te loggen of je browserdata te wissen.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-content">
+          <h2>3. Aansprakelijkheid</h2>
+          <p>Deze demo biedt geen garanties. Gebruik de tool op eigen risico en test altijd voordat je jouw kaart met klanten deelt.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-content">
+          <h2>4. Wijzigingen</h2>
+          <p>Voorwaarden kunnen worden aangepast tijdens ontwikkeling. We raden aan deze pagina regelmatig te controleren.</p>
+        </div>
+      </section>
+
+      <footer class="page-footer">Laat ons weten welke voorwaarden jij belangrijk vindt.</footer>
+    </div>
+  </main>
+
+  <script>
+    const logoutBtn = document.getElementById('logoutBtn');
+    const storedEmail = localStorage.getItem('user:email');
+    if (storedEmail) {
+      logoutBtn.hidden = false;
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('user:email');
+        window.location.replace('home.html');
+      });
+    }
+
+    const authLink = document.querySelector('[data-auth-link]');
+    if (authLink) {
+      authLink.setAttribute('href', storedEmail ? 'card.html' : 'index.html');
+    }
+  </script>
+</body>
+</html>

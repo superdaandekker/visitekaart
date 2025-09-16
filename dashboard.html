@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digitale Kaart – Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav">
+      <a class="site-title" href="dashboard.html">Digitale Kaart</a>
+      <nav class="site-nav" aria-label="Hoofdnavigatie">
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="index.html" data-auth-link>Mijn kaart</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="page-intro">
+        <div class="actions">
+          <div class="stack">
+            <h1>Dashboard</h1>
+            <p class="muted">Krijg een snel overzicht van je kaartstatistieken en acties.</p>
+          </div>
+          <button type="button" class="btn btn-secondary push-end" id="logoutBtn" hidden>Uitloggen</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h2>Statistieken</h2>
+            <p class="card-subtext">In deze demo zijn het voorbeeldcijfers.</p>
+          </div>
+          <span class="badge">Live demo</span>
+        </div>
+        <div class="card-content">
+          <div class="field-grid two">
+            <div class="stack center">
+              <span class="muted">Bezoeken</span>
+              <span class="metric">128</span>
+            </div>
+            <div class="stack center">
+              <span class="muted">Gedeeld</span>
+              <span class="metric">56</span>
+            </div>
+            <div class="stack center">
+              <span class="muted">Downloads</span>
+              <span class="metric">34</span>
+            </div>
+            <div class="stack center">
+              <span class="muted">Laatste update</span>
+              <span class="metric">vandaag</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h2>Snelle acties</h2>
+            <p class="card-subtext">Werk je kaart in enkele klikken bij.</p>
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="actions">
+            <a href="index.html" class="button">Kaart bewerken</a>
+            <a href="card.html" class="button btn-secondary">Publieke kaart bekijken</a>
+            <button type="button" class="btn btn-secondary" data-action="share">Deel je kaart</button>
+          </div>
+          <p class="supporting-text">Deze acties vereisen geen backend en werken met de demo-data in je browser.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h2>Tips</h2>
+            <p class="card-subtext">Maximaliseer het effect van je digitale visitekaart.</p>
+          </div>
+        </div>
+        <div class="card-content">
+          <ul class="list-clean">
+            <li class="detail-item">
+              <span class="label">Visuals</span>
+              <p>Gebruik een frisse profielfoto en een heldere achtergrondkleur.</p>
+            </li>
+            <li class="detail-item">
+              <span class="label">Call to action</span>
+              <p>Plaats je belangrijkste link bovenaan, zodat bezoekers sneller actie ondernemen.</p>
+            </li>
+            <li class="detail-item">
+              <span class="label">Update</span>
+              <p>Werk je tagline regelmatig bij en deel recente projecten of mijlpalen.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="page-footer">Deze demo bewaart alleen gegevens in je browser. Deel gerust je kaart!</footer>
+    </div>
+  </main>
+
+  <script>
+    const logoutBtn = document.getElementById('logoutBtn');
+    const storedEmail = localStorage.getItem('user:email');
+    if (storedEmail) {
+      logoutBtn.hidden = false;
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('user:email');
+        window.location.replace('home.html');
+      });
+    }
+
+    const authLink = document.querySelector('[data-auth-link]');
+    if (authLink) {
+      authLink.setAttribute('href', storedEmail ? 'card.html' : 'index.html');
+    }
+
+    const shareBtn = document.querySelector('[data-action="share"]');
+    if (shareBtn) {
+      shareBtn.addEventListener('click', () => {
+        const shareUrl = new URL('card.html', window.location.href).href;
+        window.prompt('Kopieer de link naar je kaart:', shareUrl);
+      });
+    }
+  </script>
+</body>
+</html>

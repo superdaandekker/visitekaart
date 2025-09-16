@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digitale Kaart – Profiel</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav">
+      <a class="site-title" href="profile.html">Digitale Kaart</a>
+      <nav class="site-nav" aria-label="Hoofdnavigatie">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="index.html" data-auth-link class="active">Mijn kaart</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="page-intro">
+        <div class="actions">
+          <div class="stack">
+            <h1>Profiel</h1>
+            <p class="muted">Bekijk hoe jouw gegevens op de digitale visitekaart verschijnen.</p>
+          </div>
+          <button type="button" class="btn btn-secondary push-end" id="logoutBtn" hidden>Uitloggen</button>
+        </div>
+      </section>
+
+      <div class="split two">
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <h2>Persoonlijke info</h2>
+              <p class="card-subtext">Pas je profiel aan via “Mijn kaart”.</p>
+            </div>
+            <span class="badge">Demo</span>
+          </div>
+          <div class="card-content">
+            <div class="actions">
+              <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?fit=facearea&w=300&h=300" alt="Voorbeeld profielfoto" class="avatar" />
+              <div class="stack">
+                <p class="card-name">Jamie de Vries</p>
+                <p class="card-role">Creative Lead</p>
+                <p class="card-company">Studio Horizon</p>
+              </div>
+            </div>
+            <p class="supporting-text">Je profielfoto en gegevens worden direct bijgewerkt zodra je ze opslaat in “Mijn kaart”.</p>
+            <div class="actions">
+              <a href="index.html" class="button">Profielfoto wijzigen</a>
+              <a href="index.html#fieldBio" class="button btn-secondary">Bio bijwerken</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <h2>Contactgegevens</h2>
+              <p class="card-subtext">Alle links blijven klikbaar en toegankelijk.</p>
+            </div>
+          </div>
+          <div class="card-content">
+            <ul class="list-clean">
+              <li class="detail-item">
+                <span class="label">E-mail</span>
+                <a href="mailto:jamie@studiohorizon.nl">jamie@studiohorizon.nl</a>
+              </li>
+              <li class="detail-item">
+                <span class="label">Telefoon</span>
+                <a href="tel:+31612345678">+31 6 12345678</a>
+              </li>
+              <li class="detail-item">
+                <span class="label">Website</span>
+                <a href="https://studiohorizon.nl" target="_blank" rel="noopener">studiohorizon.nl</a>
+              </li>
+              <li class="detail-item">
+                <span class="label">LinkedIn</span>
+                <a href="https://linkedin.com/in/jamiedevries" target="_blank" rel="noopener">linkedin.com/in/jamiedevries</a>
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <section class="card">
+        <div class="card-header">
+          <div>
+            <h2>Bio voorbeeld</h2>
+            <p class="card-subtext">Laat zien wie je bent in maximaal 18 woorden.</p>
+          </div>
+        </div>
+        <div class="card-content">
+          <p class="lead">“Ik help scale-ups met merkdesign dat direct vertrouwen wekt.”</p>
+          <p class="supporting-text">Gebruik de AI-knop in “Mijn kaart” om snel een sterke tagline te genereren.</p>
+        </div>
+      </section>
+
+      <footer class="page-footer">Je profielinformatie blijft privé en wordt alleen lokaal opgeslagen.</footer>
+    </div>
+  </main>
+
+  <script>
+    const logoutBtn = document.getElementById('logoutBtn');
+    const storedEmail = localStorage.getItem('user:email');
+    if (storedEmail) {
+      logoutBtn.hidden = false;
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('user:email');
+        window.location.replace('home.html');
+      });
+    }
+
+    const authLink = document.querySelector('[data-auth-link]');
+    if (authLink) {
+      authLink.setAttribute('href', storedEmail ? 'card.html' : 'index.html');
+    }
+  </script>
+</body>
+</html>

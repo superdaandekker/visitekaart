@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digitale Kaart – Cookies</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="nav">
+      <a class="site-title" href="cookies.html">Digitale Kaart</a>
+      <nav class="site-nav" aria-label="Hoofdnavigatie">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="index.html" data-auth-link class="active">Mijn kaart</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <section class="page-intro">
+        <div class="actions">
+          <div class="stack">
+            <h1>Cookiebeleid</h1>
+            <p class="muted">We gebruiken geen trackingcookies – wel lokale opslag voor jouw gemak.</p>
+          </div>
+          <button type="button" class="btn btn-secondary push-end" id="logoutBtn" hidden>Uitloggen</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-content">
+          <h2>Welke cookies gebruiken we?</h2>
+          <p>Deze demo plaatst geen cookies op je apparaat. In plaats daarvan slaan we gegevens op via <code>localStorage</code> om je kaart persistent te maken.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-content">
+          <h2>Waarom localStorage?</h2>
+          <ul class="list-clean">
+            <li class="detail-item">
+              <span class="label">Snel</span>
+              <p>Je kaart wordt direct geladen zonder netwerkvertraging.</p>
+            </li>
+            <li class="detail-item">
+              <span class="label">Privé</span>
+              <p>Alle data blijft lokaal op je apparaat – wij zien niets.</p>
+            </li>
+            <li class="detail-item">
+              <span class="label">Controle</span>
+              <p>Wil je resetten? Wis simpelweg de gegevens via je browser of klik op uitloggen.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-content">
+          <h2>Toekomstige updates</h2>
+          <p>Bij een productieversie voegen we een compacte cookiebanner toe zodra er analytische tools of third-party integraties worden gebruikt.</p>
+        </div>
+      </section>
+
+      <footer class="page-footer">Heb je vragen over cookies? Mail naar <a href="mailto:cookies@digitale-kaart.nl">cookies@digitale-kaart.nl</a>.</footer>
+    </div>
+  </main>
+
+  <script>
+    const logoutBtn = document.getElementById('logoutBtn');
+    const storedEmail = localStorage.getItem('user:email');
+    if (storedEmail) {
+      logoutBtn.hidden = false;
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('user:email');
+        window.location.replace('home.html');
+      });
+    }
+
+    const authLink = document.querySelector('[data-auth-link]');
+    if (authLink) {
+      authLink.setAttribute('href', storedEmail ? 'card.html' : 'index.html');
+    }
+  </script>
+</body>
+</html>
