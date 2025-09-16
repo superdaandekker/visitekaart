@@ -27,11 +27,14 @@
         <a href="./cookies.html">Cookies</a>
       </nav>
     </header>
+
     <div class="page-content">
-      <main class="auth-card">
+      <main class="auth-card" aria-labelledby="authTitle">
         <header>
-          <h1>Digitale Visitekaart</h1>
-          <p class="muted">Demo-login, geen echte backend.</p>
+          <h1 id="authTitle">Digitale Visitekaart</h1>
+          <p class="muted">
+            Log in of maak een demo-account aan om meteen met je visitekaart aan de slag te gaan.
+          </p>
         </header>
 
         <div class="tabs" role="tablist" aria-label="Aanmelden">
@@ -51,12 +54,12 @@
         </div>
 
         <section id="panelLogin" role="tabpanel" tabindex="0" aria-labelledby="tabLogin">
-          <form id="loginForm">
-            <div>
-              <label for="loginEmail">E-mail</label>
+          <form id="loginForm" autocomplete="on">
+            <div class="form-field">
+              <label for="loginEmail">E-mailadres</label>
               <input id="loginEmail" name="email" type="email" autocomplete="email" required />
             </div>
-            <div>
+            <div class="form-field">
               <label for="loginPassword">Wachtwoord</label>
               <input
                 id="loginPassword"
@@ -72,12 +75,12 @@
         </section>
 
         <section id="panelRegister" role="tabpanel" tabindex="0" aria-labelledby="tabRegister" hidden>
-          <form id="registerForm">
-            <div>
-              <label for="registerEmail">E-mail</label>
+          <form id="registerForm" autocomplete="on">
+            <div class="form-field">
+              <label for="registerEmail">E-mailadres</label>
               <input id="registerEmail" name="email" type="email" autocomplete="email" required />
             </div>
-            <div>
+            <div class="form-field">
               <label for="registerPassword">Wachtwoord</label>
               <input
                 id="registerPassword"
@@ -93,7 +96,7 @@
         </section>
 
         <p class="info">We bewaren alleen jouw e-mailadres lokaal in je browser.</p>
-        <p id="statusMessage" class="status" role="status" aria-live="polite"></p>
+        <p id="statusMessage" class="status" role="status" aria-live="polite" aria-atomic="true"></p>
       </main>
     </div>
 
