@@ -7,37 +7,40 @@
     <meta name="description" content="Bekijk en deel je digitale visitekaart." />
     <link rel="icon" href="./favicon.svg" />
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="theme.hypermodern.css?v=3" />
   </head>
   <body class="card-page" data-page="card">
-    <header class="site-header">
-      <div class="site-brand">
-        <a href="./index.html">Digitale Visitekaart</a>
+    <header class="site-header u-navbar">
+      <div class="inner container">
+        <div class="site-brand">
+          <a href="./index.html">Digitale Visitekaart</a>
+        </div>
+        <nav class="site-nav" aria-label="Hoofdmenu">
+          <a href="./index.html">Start</a>
+          <a href="./profile.html">Profiel</a>
+          <a href="./card.html">Kaart</a>
+          <a href="./dashboard.html">Dashboard</a>
+          <a href="./settings.html">Instellingen</a>
+          <a href="./privacy.html">Privacy</a>
+          <a href="./terms.html">Voorwaarden</a>
+          <a href="./cookies.html">Cookies</a>
+        </nav>
       </div>
-      <nav class="site-nav" aria-label="Hoofdmenu">
-        <a href="./index.html">Start</a>
-        <a href="./profile.html">Profiel</a>
-        <a href="./card.html">Kaart</a>
-        <a href="./dashboard.html">Dashboard</a>
-        <a href="./settings.html">Instellingen</a>
-        <a href="./privacy.html">Privacy</a>
-        <a href="./terms.html">Voorwaarden</a>
-        <a href="./cookies.html">Cookies</a>
-      </nav>
     </header>
 
-    <div class="page-content">
+    <div class="page-content container">
       <div class="page-inner">
         <header>
           <h1>Jouw digitale visitekaart</h1>
           <div class="actions">
-            <a class="ghost-link" href="./dashboard.html">Terug naar editor</a>
-            <button id="shareBtn" type="button">Delen</button>
-            <button id="vcardBtn" type="button">Download vCard</button>
+            <a class="ghost-link u-btn u-btn--ghost" href="./dashboard.html">Terug naar editor</a>
+            <button id="shareBtn" type="button" class="u-btn u-btn--primary">Delen</button>
+            <button id="vcardBtn" type="button" class="u-btn u-btn--primary">Download vCard</button>
           </div>
         </header>
 
         <main>
-          <section id="cardView" class="card" aria-live="polite" hidden>
+          <section id="cardView" class="card u-card" aria-live="polite" hidden>
             <div class="preview">
               <img id="cardAvatar" class="avatar" alt="Profielfoto" />
               <div>
@@ -57,10 +60,10 @@
             <p id="cardTagline" class="tagline" hidden></p>
           </section>
 
-          <section id="emptyState" class="card empty" hidden>
+          <section id="emptyState" class="card empty u-card" hidden>
             <h2>Er is nog geen visitekaart</h2>
             <p>Je hebt nog geen kaart opgeslagen op dit apparaat.</p>
-            <a class="ghost-link" href="./dashboard.html">Maak je kaart</a>
+            <a class="ghost-link u-btn u-btn--ghost" href="./dashboard.html">Maak je kaart</a>
           </section>
         </main>
       </div>

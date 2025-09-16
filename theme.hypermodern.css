@@ -31,8 +31,10 @@ img{max-width:100%; display:block}
 .u-navbar .inner{display:flex; align-items:center; justify-content:space-between; padding:14px 22px}
 
 /* Hero fullscreen */
-.hero{min-height:88vh; display:grid; place-items:center; padding:32px}
+.hero{min-height:88vh; display:grid; place-items:center; padding:32px; width:100%}
 .hero .content{max-width:960px; text-align:center}
+.hero .actions{display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin-top:32px}
+.hero .actions .u-btn{min-width:180px}
 h1{font-size:clamp(36px,7vw,64px); line-height:1.05; margin:0 0 10px}
 p.lead{color:var(--muted); font-size:clamp(16px,2.5vw,20px); margin:0}
 
@@ -47,6 +49,9 @@ p.lead{color:var(--muted); font-size:clamp(16px,2.5vw,20px); margin:0}
 .u-btn--primary:hover{transform:translateY(-2px)}
 .u-btn--ghost{background:transparent; color:#E6EAF2; border-color:rgba(255,255,255,.18)}
 .u-btn--ghost:hover{background:rgba(255,255,255,.05)}
+.tabs .u-btn{width:100%; justify-content:center}
+.tabs button.u-btn{background:rgba(255,255,255,.04); border-color:rgba(255,255,255,.12); color:#E6EAF2; padding:12px 16px}
+.tabs button.u-btn[aria-selected="true"]{background:rgba(59,130,246,.2); border-color:rgba(99,102,241,.35); color:#fff}
 
 /* Cards */
 .u-card{
