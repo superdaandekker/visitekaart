@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Digitale Visitekaart - Jouw kaart</title>
+    <meta name="description" content="Bekijk en deel je digitale visitekaart." />
+    <link rel="icon" href="./favicon.svg" />
+    <link rel="stylesheet" href="theme.hypermodern.css" />
+  </head>
+  <body class="page-card">
+    <div class="wrap container">
+      <section class="hero">
+        <div class="content">
+          <header>
+            <h1>Jouw digitale visitekaart</h1>
+            <p class="muted">Bekijk en deel je digitale visitekaart.</p>
+          </header>
+        </div>
+        <div class="actions hero-actions">
+          <a class="ghost-link u-btn u-btn--ghost" href="index.html">Terug naar editor</a>
+          <button id="shareBtn" class="u-btn u-btn--primary" type="button">Delen</button>
+          <button id="vcardBtn" class="u-btn u-btn--ghost" type="button">Download vCard</button>
+        </div>
+      </section>
+
+      <main>
+        <section id="cardView" class="card u-card" aria-live="polite" hidden>
+          <div class="preview">
+            <img id="cardAvatar" class="avatar" alt="Profielfoto" />
+            <div>
+              <div id="cardName" class="name"></div>
+              <div id="cardTitle" class="title" hidden></div>
+              <div id="cardCompany" class="company" hidden></div>
+              <div class="contact">
+                <a id="cardEmail" hidden></a>
+                <a id="cardPhone" hidden></a>
+                <a id="cardWebsite" hidden></a>
+                <a id="cardLinkedIn" hidden>LinkedIn</a>
+                <a id="cardInstagram" hidden>Instagram</a>
+                <a id="cardX" hidden>X</a>
+              </div>
+            </div>
+          </div>
+          <p id="cardTagline" class="tagline" hidden></p>
+        </section>
+
+        <section id="emptyState" class="card u-card empty" hidden>
+          <h2>Er is nog geen visitekaart</h2>
+          <p>Je hebt nog geen kaart opgeslagen op dit apparaat.</p>
+          <a class="ghost-link u-btn u-btn--ghost" href="index.html">Maak je kaart</a>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const STORAGE_KEY = 'card:data';
+      const PLACEHOLDER_AVATAR =
+        'data:image/svg+xml;utf8,' +
+        encodeURIComponent(
+          `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96"><rect width="100%" height="100%" fill="#0f1218"/><text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" fill="#2e3440" font-family="Arial" font-size="12">Foto</text></svg>`
+        );
+
+      function withProtocol(url) {
+        if (!url) return '';
+        if (/^(https?:|data:|blob:)/i.test(url)) return url;
+        return `https://${url}`;
+      }
+
+      function load() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return undefined;
+          return JSON.parse(raw);
+        } catch (error) {
+          console.warn('Kon kaartdata niet laden', error);
+          return undefined;
+        }
+      }
+
+      function setTextContent(element, value) {
+        if (!element) return;
+        if (value) {
+          element.textContent = value;
+          element.hidden = false;
+        } else {
+          element.textContent = '';
+          element.hidden = true;
+        }
+      }
+
+      function renderCard(data) {
+        const card = document.getElementById('cardView');
+        const empty = document.getElementById('emptyState');
+        if (!card || !empty) return;
+
+        empty.hidden = true;
+        card.hidden = false;
+
+        const avatar = document.getElementById('cardAvatar');
+        if (avatar instanceof HTMLImageElement) {
+          avatar.src = withProtocol(data.avatar) || PLACEHOLDER_AVATAR;
+        }
+
+        setTextContent(document.getElementById('cardName'), data.name || '');
+        setTextContent(document.getElementById('cardTitle'), data.title || '');
+        setTextContent(document.getElementById('cardCompany'), data.company || '');
+        setTextContent(document.getElementById('cardTagline'), data.bio || '');
+
+        const emailLink = document.getElementById('cardEmail');
+        if (emailLink instanceof HTMLAnchorElement) {
+          if (data.email) {
+            emailLink.href = `mailto:${data.email}`;
+            emailLink.textContent = data.email;
+            emailLink.hidden = false;
+          } else {
+            emailLink.removeAttribute('href');
+            emailLink.hidden = true;
+          }
+        }
+
+        const telLink = document.getElementById('cardPhone');
+        if (telLink instanceof HTMLAnchorElement) {
+          if (data.phone) {
+            telLink.href = `tel:${data.phone}`;
+            telLink.textContent = data.phone;
+            telLink.hidden = false;
+          } else {
+            telLink.removeAttribute('href');
+            telLink.hidden = true;
+          }
+        }
+
+        const webLink = document.getElementById('cardWebsite');
+        if (webLink instanceof HTMLAnchorElement) {
+          if (data.website) {
+            const safeWebsite = withProtocol(data.website);
+            webLink.href = safeWebsite;
+            webLink.textContent = data.website;
+            webLink.target = '_blank';
+            webLink.rel = 'noreferrer';
+            webLink.hidden = false;
+          } else {
+            webLink.removeAttribute('href');
+            webLink.hidden = true;
+          }
+        }
+
+        const liLink = document.getElementById('cardLinkedIn');
+        if (liLink instanceof HTMLAnchorElement) {
+          if (data.linkedin) {
+            liLink.href = withProtocol(data.linkedin);
+            liLink.hidden = false;
+          } else {
+            liLink.removeAttribute('href');
+            liLink.hidden = true;
+          }
+        }
+
+        const igLink = document.getElementById('cardInstagram');
+        if (igLink instanceof HTMLAnchorElement) {
+          if (data.instagram) {
+            igLink.href = withProtocol(data.instagram);
+            igLink.hidden = false;
+          } else {
+            igLink.removeAttribute('href');
+            igLink.hidden = true;
+          }
+        }
+
+        const xLink = document.getElementById('cardX');
+        if (xLink instanceof HTMLAnchorElement) {
+          if (data.x) {
+            xLink.href = withProtocol(data.x);
+            xLink.hidden = false;
+          } else {
+            xLink.removeAttribute('href');
+            xLink.hidden = true;
+          }
+        }
+      }
+
+      function renderEmptyState() {
+        const card = document.getElementById('cardView');
+        const empty = document.getElementById('emptyState');
+        if (!card || !empty) return;
+
+        card.hidden = true;
+        empty.hidden = false;
+      }
+
+      function hydrate() {
+        const data = load();
+        if (!data) {
+          renderEmptyState();
+          return;
+        }
+
+        renderCard(data);
+      }
+
+      document.getElementById('shareBtn')?.addEventListener('click', () => {
+        const data = load();
+        if (!data) return;
+
+        const shareData = {
+          title: data.name || 'Mijn visitekaart',
+          text: data.bio || 'Bekijk mijn digitale visitekaart',
+          url: window.location.href,
+        };
+
+        if (navigator.share) {
+          navigator.share(shareData).catch((error) => {
+            console.warn('Delen geannuleerd', error);
+          });
+        } else {
+          navigator.clipboard
+            ?.writeText(`${shareData.title} - ${shareData.text} - ${shareData.url}`)
+            .catch((error) => console.warn('Kon kaart niet kopiëren', error));
+        }
+      });
+
+      document.getElementById('vcardBtn')?.addEventListener('click', () => {
+        const data = load();
+        if (!data) return;
+
+        const lines = [
+          'BEGIN:VCARD',
+          'VERSION:3.0',
+          `FN:${data.name || ''}`,
+          data.company ? `ORG:${data.company}` : null,
+          data.title ? `TITLE:${data.title}` : null,
+          data.phone ? `TEL;TYPE=CELL:${data.phone}` : null,
+          data.email ? `EMAIL;TYPE=WORK:${data.email}` : null,
+          data.website ? `URL:${withProtocol(data.website)}` : null,
+          data.linkedin ? `X-SOCIALPROFILE;TYPE=LinkedIn:${withProtocol(data.linkedin)}` : null,
+          data.instagram ? `X-SOCIALPROFILE;TYPE=Instagram:${withProtocol(data.instagram)}` : null,
+          data.x ? `X-SOCIALPROFILE;TYPE=X:${withProtocol(data.x)}` : null,
+          data.bio ? `NOTE:${data.bio}` : null,
+          'END:VCARD',
+        ].filter(Boolean);
+
+        const blob = new Blob([lines.join('\n')], { type: 'text/vcard' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'visitekaart.vcf';
+        link.click();
+        URL.revokeObjectURL(link.href);
+      });
+
+      hydrate();
+    </script>
+  </body>
+</html>

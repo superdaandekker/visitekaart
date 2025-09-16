@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Digitale Visitekaart - Aanmelden</title>
+    <meta
+      name="description"
+      content="Meld je aan om je digitale visitekaart te bouwen en delen."
+    />
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="stylesheet" href="theme.hypermodern.css" />
+  </head>
+  <body class="page-auth">
+    <main class="card u-card">
+      <header>
+        <h1>Digitale Visitekaart</h1>
+        <p class="muted">Demo-login, geen echte backend.</p>
+      </header>
+
+      <div class="tabs" role="tablist" aria-label="Aanmelden">
+        <button id="tabLogin" type="button" role="tab" aria-selected="true" aria-controls="panelLogin">
+          Inloggen
+        </button>
+        <button
+          id="tabRegister"
+          type="button"
+          role="tab"
+          aria-selected="false"
+          aria-controls="panelRegister"
+          tabindex="-1"
+        >
+          Account aanmaken
+        </button>
+      </div>
+
+      <section id="panelLogin" role="tabpanel" tabindex="0" aria-labelledby="tabLogin">
+        <form id="loginForm">
+          <div>
+            <label for="loginEmail">E-mail</label>
+            <input
+              id="loginEmail"
+              class="u-input"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <div>
+            <label for="loginPassword">Wachtwoord</label>
+            <input
+              id="loginPassword"
+              class="u-input"
+              name="password"
+              type="password"
+              minlength="6"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+          <button type="submit" class="u-btn u-btn--primary">Inloggen</button>
+        </form>
+      </section>
+
+      <section id="panelRegister" role="tabpanel" tabindex="0" aria-labelledby="tabRegister" hidden>
+        <form id="registerForm">
+          <div>
+            <label for="registerEmail">E-mail</label>
+            <input
+              id="registerEmail"
+              class="u-input"
+              name="email"
+              type="email"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <div>
+            <label for="registerPassword">Wachtwoord</label>
+            <input
+              id="registerPassword"
+              class="u-input"
+              name="password"
+              type="password"
+              minlength="6"
+              autocomplete="new-password"
+              required
+            />
+          </div>
+          <button type="submit" class="u-btn u-btn--ghost">Account aanmaken</button>
+        </form>
+      </section>
+
+      <p class="info">We bewaren alleen jouw e-mailadres lokaal in je browser.</p>
+      <p id="statusMessage" class="status" role="status" aria-live="polite"></p>
+    </main>
+
+    <script>
+      const STORAGE_KEY_USER = 'user:email';
+
+      function switchTab(activeId) {
+        const tabs = [
+          { tab: document.getElementById('tabLogin'), panel: document.getElementById('panelLogin') },
+          { tab: document.getElementById('tabRegister'), panel: document.getElementById('panelRegister') },
+        ];
+
+        tabs.forEach(({ tab, panel }) => {
+          const isActive = tab.id === activeId;
+          tab.setAttribute('aria-selected', String(isActive));
+          tab.tabIndex = isActive ? 0 : -1;
+          panel.hidden = !isActive;
+        });
+
+        const activeTab = document.getElementById(activeId);
+        activeTab?.focus();
+      }
+
+      function handleSubmit(event) {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const emailInput = form.querySelector('input[type="email"]');
+
+        if (!(emailInput instanceof HTMLInputElement)) {
+          return;
+        }
+
+        const email = emailInput.value.trim();
+        if (!email) {
+          return;
+        }
+
+        try {
+          localStorage.setItem(STORAGE_KEY_USER, email);
+          window.location.href = 'index.html';
+        } catch (error) {
+          const status = document.getElementById('statusMessage');
+          if (status) {
+            status.textContent = 'Kon gegevens niet opslaan. Controleer je browserinstellingen.';
+          }
+          console.error('Kon user:email niet instellen', error);
+        }
+      }
+
+      document.getElementById('tabLogin')?.addEventListener('click', () => switchTab('tabLogin'));
+      document.getElementById('tabRegister')?.addEventListener('click', () => switchTab('tabRegister'));
+
+      document.getElementById('loginForm')?.addEventListener('submit', handleSubmit);
+      document.getElementById('registerForm')?.addEventListener('submit', handleSubmit);
+
+      if (localStorage.getItem(STORAGE_KEY_USER)) {
+        window.location.replace('index.html');
+      }
+    </script>
+  </body>
+</html>
