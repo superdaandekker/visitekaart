@@ -10,37 +10,42 @@
     />
     <link rel="icon" href="./favicon.svg" />
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="theme.hypermodern.css" />
   </head>
   <body class="page-dashboard" data-page="dashboard">
-    <header class="site-header">
-      <div class="site-brand">
-        <a href="./index.html">Digitale Visitekaart</a>
+    <header class="site-header u-navbar">
+      <div class="inner">
+        <div class="site-brand">
+          <a href="./index.html">Digitale Visitekaart</a>
+        </div>
+        <nav class="site-nav" aria-label="Hoofdmenu">
+          <a href="./index.html">Start</a>
+          <a href="./profile.html">Profiel</a>
+          <a href="./card.html">Kaart</a>
+          <a href="./dashboard.html">Dashboard</a>
+          <a href="./settings.html">Instellingen</a>
+          <a href="./privacy.html">Privacy</a>
+          <a href="./terms.html">Voorwaarden</a>
+          <a href="./cookies.html">Cookies</a>
+        </nav>
       </div>
-      <nav class="site-nav" aria-label="Hoofdmenu">
-        <a href="./index.html">Start</a>
-        <a href="./profile.html">Profiel</a>
-        <a href="./card.html">Kaart</a>
-        <a href="./dashboard.html">Dashboard</a>
-        <a href="./settings.html">Instellingen</a>
-        <a href="./privacy.html">Privacy</a>
-        <a href="./terms.html">Voorwaarden</a>
-        <a href="./cookies.html">Cookies</a>
-      </nav>
     </header>
 
-    <div class="page-content">
+    <div class="page-content container">
       <div class="editor-wrap">
-        <header class="editor-header">
-          <h1>Digitale Visitekaart</h1>
-          <div class="actions">
-            <button id="btnLogout" type="button">Uitloggen</button>
-            <button id="btnShare" type="button">Delen</button>
-            <button id="btnVCard" type="button">Download vCard</button>
+        <section class="editor-header hero">
+          <div class="content">
+            <h1>Digitale Visitekaart</h1>
           </div>
-        </header>
+          <div class="actions">
+            <button class="u-btn u-btn--ghost" id="btnLogout" type="button">Uitloggen</button>
+            <button class="u-btn u-btn--primary" id="btnShare" type="button">Delen</button>
+            <button class="u-btn u-btn--primary" id="btnVCard" type="button">Download vCard</button>
+          </div>
+        </section>
 
         <main class="editor-main">
-          <section class="card" aria-labelledby="previewTitle">
+          <section class="card u-card" aria-labelledby="previewTitle">
             <h2 id="previewTitle" class="muted">Voorbeeldkaart</h2>
             <div class="preview">
               <img id="avatarPreview" class="avatar" alt="Profielfoto" />
@@ -61,66 +66,125 @@
             <p id="tagline"></p>
           </section>
 
-          <section class="card" aria-labelledby="editTitle">
+          <section class="card u-card" aria-labelledby="editTitle">
             <h2 id="editTitle" class="muted">Bewerken</h2>
             <form id="editForm">
-              <div class="grid-2">
+              <div class="grid-2 grid cols-2">
                 <div>
                   <label for="fieldName">Naam</label>
-                  <input id="fieldName" name="name" placeholder="Jouw Naam" />
+                  <input
+                    class="u-input"
+                    id="fieldName"
+                    name="name"
+                    placeholder="Jouw Naam"
+                  />
                 </div>
                 <div>
                   <label for="fieldTitle">Functie</label>
-                  <input id="fieldTitle" name="title" placeholder="Bijv. Founder" />
+                  <input
+                    class="u-input"
+                    id="fieldTitle"
+                    name="title"
+                    placeholder="Bijv. Founder"
+                  />
                 </div>
               </div>
-              <div class="grid-2">
+              <div class="grid-2 grid cols-2">
                 <div>
                   <label for="fieldCompany">Bedrijf</label>
-                  <input id="fieldCompany" name="company" placeholder="Bedrijfsnaam" />
+                  <input
+                    class="u-input"
+                    id="fieldCompany"
+                    name="company"
+                    placeholder="Bedrijfsnaam"
+                  />
                 </div>
                 <div>
                   <label for="fieldWebsite">Website</label>
-                  <input id="fieldWebsite" name="website" placeholder="https://..." />
+                  <input
+                    class="u-input"
+                    id="fieldWebsite"
+                    name="website"
+                    placeholder="https://..."
+                  />
                 </div>
               </div>
-              <div class="grid-2">
+              <div class="grid-2 grid cols-2">
                 <div>
                   <label for="fieldEmail">E-mail</label>
-                  <input id="fieldEmail" name="email" type="email" placeholder="jij@voorbeeld.nl" />
+                  <input
+                    class="u-input"
+                    id="fieldEmail"
+                    name="email"
+                    type="email"
+                    placeholder="jij@voorbeeld.nl"
+                  />
                 </div>
                 <div>
                   <label for="fieldPhone">Telefoon</label>
-                  <input id="fieldPhone" name="phone" placeholder="+31..." />
+                  <input
+                    class="u-input"
+                    id="fieldPhone"
+                    name="phone"
+                    placeholder="+31..."
+                  />
                 </div>
               </div>
-              <div class="grid-2">
+              <div class="grid-2 grid cols-2">
                 <div>
                   <label for="fieldLinkedIn">LinkedIn</label>
-                  <input id="fieldLinkedIn" name="linkedin" placeholder="https://linkedin.com/in/..." />
+                  <input
+                    class="u-input"
+                    id="fieldLinkedIn"
+                    name="linkedin"
+                    placeholder="https://linkedin.com/in/..."
+                  />
                 </div>
                 <div>
                   <label for="fieldInstagram">Instagram</label>
-                  <input id="fieldInstagram" name="instagram" placeholder="https://instagram.com/..." />
+                  <input
+                    class="u-input"
+                    id="fieldInstagram"
+                    name="instagram"
+                    placeholder="https://instagram.com/..."
+                  />
                 </div>
               </div>
-              <div class="grid-2">
+              <div class="grid-2 grid cols-2">
                 <div>
                   <label for="fieldX">X (Twitter)</label>
-                  <input id="fieldX" name="x" placeholder="https://x.com/..." />
+                  <input
+                    class="u-input"
+                    id="fieldX"
+                    name="x"
+                    placeholder="https://x.com/..."
+                  />
                 </div>
                 <div aria-hidden="true"></div>
               </div>
               <div>
                 <label for="fieldAvatar">Profielfoto (URL)</label>
-                <input id="fieldAvatar" name="avatar" placeholder="https://...jpg" />
+                <input
+                  class="u-input"
+                  id="fieldAvatar"
+                  name="avatar"
+                  placeholder="https://...jpg"
+                />
               </div>
               <div>
                 <label for="fieldBio">Korte bio / tagline</label>
-                <textarea id="fieldBio" name="bio" rows="3" placeholder="Wat doe jij?"></textarea>
+                <textarea
+                  class="u-input"
+                  id="fieldBio"
+                  name="bio"
+                  rows="3"
+                  placeholder="Wat doe jij?"
+                ></textarea>
               </div>
               <div class="row">
-                <button id="btnGenerate" type="button">Genereer tagline met AI</button>
+                <button class="u-btn u-btn--primary" id="btnGenerate" type="button">
+                  Genereer tagline met AI
+                </button>
                 <span class="pill">OpenAI-sleutel vereist</span>
               </div>
             </form>
@@ -130,7 +194,7 @@
           </section>
         </main>
 
-        <footer class="editor-footer">
+        <footer class="editor-footer u-footer">
           Bewaar je wijzigingen lokaal en deel je kaart. De AI-functie gebruikt het serverless endpoint met
           <code>OPENAI_API_KEY</code>.
         </footer>
