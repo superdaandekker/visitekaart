@@ -1,4 +1,3 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 import OpenAI from 'openai';
 
 const RESPONSES_MODEL = 'gpt-4.1-mini';
@@ -13,13 +12,7 @@ function createClient() {
   return new OpenAI({ apiKey });
 }
 
-function buildPrompt({
-  name,
-  title,
-  company,
-  website,
-  tone,
-}: Partial<{ name: string; title: string; company: string; website: string; tone: string }>) {
+function buildPrompt({ name, title, company, website, tone } = {}) {
   const companyPart = company ? ` bij ${company}` : '';
   const websitePart = website ? ` (website: ${website})` : '';
   const tonePart = tone || 'vriendelijk, professioneel';
@@ -28,15 +21,15 @@ function buildPrompt({
   return `Schrijf één korte, pakkende tagline (maximaal 18 woorden) voor ${person}${role}${companyPart}${websitePart}. Gebruik een toon die ${tonePart} aanvoelt.`;
 }
 
-function extractResponseText(result: unknown): string | undefined {
+function extractResponseText(result) {
   if (!result || typeof result !== 'object') return undefined;
 
-  const maybeOutputText = (result as { output_text?: string }).output_text;
+  const maybeOutputText = result.output_text;
   if (typeof maybeOutputText === 'string' && maybeOutputText.trim()) {
     return maybeOutputText.trim();
   }
 
-  const maybeOutput = (result as { output?: Array<{ content?: Array<{ text?: { value?: string } }> }> }).output;
+  const maybeOutput = Array.isArray(result.output) ? result.output : undefined;
   const firstContent = maybeOutput?.[0]?.content?.[0];
   const value = firstContent?.text?.value;
   if (typeof value === 'string' && value.trim()) {
@@ -46,7 +39,7 @@ function extractResponseText(result: unknown): string | undefined {
   return undefined;
 }
 
-async function generateTagline(client: OpenAI, prompt: string) {
+async function generateTagline(client, prompt) {
   try {
     const response = await client.responses.create({
       model: RESPONSES_MODEL,
@@ -83,29 +76,23 @@ async function generateTagline(client: OpenAI, prompt: string) {
   throw new Error('Kon geen tekst genereren via OpenAI');
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method Not Allowed' });
     return;
   }
 
-  let client: OpenAI;
+  let client;
   try {
     client = createClient();
   } catch (error) {
-    res.status(500).json({ error: (error as Error).message || 'OpenAI niet geconfigureerd' });
+    const message = error instanceof Error ? error.message : 'OpenAI niet geconfigureerd';
+    res.status(500).json({ error: message });
     return;
   }
 
   try {
-    const body = (req.body ?? {}) as Partial<{
-      name: string;
-      title: string;
-      company: string;
-      website: string;
-      tone: string;
-    }>;
-
+    const body = req.body ?? {};
     const prompt = buildPrompt(body);
     const text = await generateTagline(client, prompt);
 
