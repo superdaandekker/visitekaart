@@ -159,6 +159,11 @@ form {
   gap: 16px;
 }
 
+.form-field {
+  display: grid;
+  gap: 6px;
+}
+
 label {
   display: block;
   font-size: 14px;
