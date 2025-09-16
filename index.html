@@ -10,26 +10,29 @@
     />
     <link rel="icon" href="./favicon.svg" />
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="theme.hypermodern.css?v=3" />
   </head>
   <body class="page-auth" data-page="auth">
-    <header class="site-header">
-      <div class="site-brand">
-        <a href="./index.html">Digitale Visitekaart</a>
+    <header class="site-header u-navbar">
+      <div class="inner container">
+        <div class="site-brand">
+          <a href="./index.html">Digitale Visitekaart</a>
+        </div>
+        <nav class="site-nav" aria-label="Hoofdmenu">
+          <a href="./index.html">Start</a>
+          <a href="./profile.html">Profiel</a>
+          <a href="./card.html">Kaart</a>
+          <a href="./dashboard.html">Dashboard</a>
+          <a href="./settings.html">Instellingen</a>
+          <a href="./privacy.html">Privacy</a>
+          <a href="./terms.html">Voorwaarden</a>
+          <a href="./cookies.html">Cookies</a>
+        </nav>
       </div>
-      <nav class="site-nav" aria-label="Hoofdmenu">
-        <a href="./index.html">Start</a>
-        <a href="./profile.html">Profiel</a>
-        <a href="./card.html">Kaart</a>
-        <a href="./dashboard.html">Dashboard</a>
-        <a href="./settings.html">Instellingen</a>
-        <a href="./privacy.html">Privacy</a>
-        <a href="./terms.html">Voorwaarden</a>
-        <a href="./cookies.html">Cookies</a>
-      </nav>
     </header>
 
-    <div class="page-content">
-      <main class="auth-card" aria-labelledby="authTitle">
+    <div class="page-content container">
+      <main class="auth-card u-card" aria-labelledby="authTitle">
         <header>
           <h1 id="authTitle">Digitale Visitekaart</h1>
           <p class="muted">
@@ -38,7 +41,14 @@
         </header>
 
         <div class="tabs" role="tablist" aria-label="Aanmelden">
-          <button id="tabLogin" type="button" role="tab" aria-selected="true" aria-controls="panelLogin">
+          <button
+            id="tabLogin"
+            type="button"
+            role="tab"
+            aria-selected="true"
+            aria-controls="panelLogin"
+            class="u-btn u-btn--ghost"
+          >
             Inloggen
           </button>
           <button
@@ -48,6 +58,7 @@
             aria-selected="false"
             aria-controls="panelRegister"
             tabindex="-1"
+            class="u-btn u-btn--ghost"
           >
             Account aanmaken
           </button>
@@ -57,7 +68,7 @@
           <form id="loginForm" autocomplete="on">
             <div class="form-field">
               <label for="loginEmail">E-mailadres</label>
-              <input id="loginEmail" name="email" type="email" autocomplete="email" required />
+              <input id="loginEmail" name="email" type="email" autocomplete="email" required class="u-input" />
             </div>
             <div class="form-field">
               <label for="loginPassword">Wachtwoord</label>
@@ -68,9 +79,10 @@
                 minlength="6"
                 autocomplete="current-password"
                 required
+                class="u-input"
               />
             </div>
-            <button type="submit">Inloggen</button>
+            <button type="submit" class="u-btn u-btn--primary">Inloggen</button>
           </form>
         </section>
 
@@ -78,7 +90,7 @@
           <form id="registerForm" autocomplete="on">
             <div class="form-field">
               <label for="registerEmail">E-mailadres</label>
-              <input id="registerEmail" name="email" type="email" autocomplete="email" required />
+              <input id="registerEmail" name="email" type="email" autocomplete="email" required class="u-input" />
             </div>
             <div class="form-field">
               <label for="registerPassword">Wachtwoord</label>
@@ -89,9 +101,10 @@
                 minlength="6"
                 autocomplete="new-password"
                 required
+                class="u-input"
               />
             </div>
-            <button type="submit">Account aanmaken</button>
+            <button type="submit" class="u-btn u-btn--primary">Account aanmaken</button>
           </form>
         </section>
 
