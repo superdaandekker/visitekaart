@@ -36,6 +36,7 @@ function requireElement<T extends HTMLElement>(id: string): T {
 const form = requireElement<HTMLFormElement>('editForm');
 const shareButton = requireElement<HTMLButtonElement>('btnShare');
 const vcardButton = requireElement<HTMLButtonElement>('btnVCard');
+const logoutButton = requireElement<HTMLButtonElement>('btnLogout');
 const generateButton = requireElement<HTMLButtonElement>('btnGenerate');
 
 const fieldElements: FieldElements = {
@@ -123,44 +124,52 @@ function withProtocol(url: string): string {
 
 function updatePreview() {
   const data = readForm();
+  const d = data;
 
-  preview.name.textContent = data.name || 'Jouw Naam';
-  preview.title.textContent = data.title || 'Functie';
-  preview.company.textContent = data.company || 'Bedrijf';
+  preview.name.textContent = d.name || 'Jouw Naam';
+  preview.title.textContent = d.title || 'Functie';
+  preview.company.textContent = d.company || 'Bedrijf';
 
-  preview.emailLink.href = data.email ? `mailto:${data.email}` : '#';
-  preview.emailLink.ariaDisabled = data.email ? 'false' : 'true';
+  preview.emailLink.href = d.email ? `mailto:${d.email}` : '#';
+  preview.emailLink.ariaDisabled = d.email ? 'false' : 'true';
 
-  preview.telLink.href = data.phone ? `tel:${data.phone}` : '#';
-  preview.telLink.ariaDisabled = data.phone ? 'false' : 'true';
+  preview.telLink.href = d.phone ? `tel:${d.phone}` : '#';
+  preview.telLink.ariaDisabled = d.phone ? 'false' : 'true';
 
-  const website = withProtocol(data.website);
-  preview.webLink.href = website || '#';
-  preview.webLink.ariaDisabled = website ? 'false' : 'true';
-  preview.webLink.target = website ? '_blank' : '_self';
-  preview.webLink.rel = website ? 'noreferrer' : '';
+  preview.webLink.href = d.website || '#';
+  preview.webLink.ariaDisabled = d.website ? 'false' : 'true';
 
-  const linkedin = withProtocol(data.linkedin);
+  if (d.website) {
+    const safeWebsite = withProtocol(d.website);
+    preview.webLink.href = safeWebsite || '#';
+    preview.webLink.target = '_blank';
+    preview.webLink.rel = 'noreferrer';
+  } else {
+    preview.webLink.target = '_self';
+    preview.webLink.rel = '';
+  }
+
+  const linkedin = withProtocol(d.linkedin);
   preview.liLink.href = linkedin || '#';
   preview.liLink.ariaDisabled = linkedin ? 'false' : 'true';
   preview.liLink.target = linkedin ? '_blank' : '_self';
   preview.liLink.rel = linkedin ? 'noreferrer' : '';
 
-  const instagram = withProtocol(data.instagram);
+  const instagram = withProtocol(d.instagram);
   preview.igLink.href = instagram || '#';
   preview.igLink.ariaDisabled = instagram ? 'false' : 'true';
   preview.igLink.target = instagram ? '_blank' : '_self';
   preview.igLink.rel = instagram ? 'noreferrer' : '';
 
-  const x = withProtocol(data.x);
+  const x = withProtocol(d.x);
   preview.xLink.href = x || '#';
   preview.xLink.ariaDisabled = x ? 'false' : 'true';
   preview.xLink.target = x ? '_blank' : '_self';
   preview.xLink.rel = x ? 'noreferrer' : '';
 
-  const avatar = withProtocol(data.avatar);
+  const avatar = withProtocol(d.avatar);
   preview.avatar.src = avatar || PLACEHOLDER_AVATAR;
-  preview.tagline.textContent = data.bio || '';
+  preview.tagline.textContent = d.bio || '';
 
   save(data);
 }
@@ -215,6 +224,15 @@ async function handleShare() {
   }
 }
 
+function handleLogout() {
+  try {
+    localStorage.removeItem('user:email');
+  } catch (error) {
+    console.warn('Kon user:email niet verwijderen', error);
+  }
+  window.location.href = 'home.html';
+}
+
 async function handleGenerate() {
   const data = readForm();
   generateButton.disabled = true;
@@ -265,6 +283,7 @@ function init() {
   form.addEventListener('input', handleInput);
   vcardButton.addEventListener('click', handleVCardDownload);
   shareButton.addEventListener('click', handleShare);
+  logoutButton.addEventListener('click', handleLogout);
   generateButton.addEventListener('click', handleGenerate);
 }
 

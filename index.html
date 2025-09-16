@@ -9,12 +9,18 @@
       content="Bouw en deel eenvoudig een digitale visitekaart met AI-taglines."
     />
     <link rel="icon" href="/favicon.svg" />
+    <script>
+      if (!localStorage.getItem('user:email')) {
+        window.location.replace('home.html');
+      }
+    </script>
   </head>
   <body>
     <div class="wrap">
       <header>
         <h1>Digitale Visitekaart</h1>
         <div class="actions">
+          <button id="btnLogout" type="button">Uitloggen</button>
           <button id="btnShare" type="button">Delen</button>
           <button id="btnVCard" type="button">Download vCard</button>
         </div>
