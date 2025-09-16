@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Digitale Visitekaart - Jouw kaart</title>
+    <meta
+      name="description"
+      content="Bekijk en deel je digitale visitekaart."
+    />
+    <link rel="icon" href="/favicon.svg" />
+    <style>
+      :root {
+        --bg: #0b0c10;
+        --card: #111317;
+        --ink: #e6e6e6;
+        --muted: #9aa3af;
+        --accent: #6ee7b7;
+        --border: #1f242d;
+        color-scheme: dark;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Inter, Ubuntu, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(180deg, #0b0c10, #0e1016);
+        color: var(--ink);
+        min-height: 100vh;
+      }
+
+      a {
+        color: var(--accent);
+      }
+
+      .wrap {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 32px 20px 48px;
+        display: grid;
+        gap: 24px;
+      }
+
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      header h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      button,
+      .ghost-link {
+        background: var(--card);
+        color: var(--ink);
+        border: 1px solid var(--border);
+        padding: 10px 16px;
+        border-radius: 14px;
+        font: inherit;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: border-color 160ms ease;
+      }
+
+      button:hover,
+      .ghost-link:hover {
+        border-color: #2b3340;
+      }
+
+      button:focus-visible,
+      .ghost-link:focus-visible {
+        outline: 2px solid rgba(110, 231, 183, 0.6);
+        outline-offset: 3px;
+      }
+
+      main {
+        display: grid;
+        gap: 20px;
+      }
+
+      .card {
+        background: radial-gradient(1200px 500px at 10% -10%, rgba(110, 231, 183, 0.15), transparent), var(--card);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 28px;
+        display: grid;
+        gap: 18px;
+      }
+
+      .preview {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+      }
+
+      .avatar {
+        width: 96px;
+        height: 96px;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        object-fit: cover;
+        background: #0f1218;
+      }
+
+      .name {
+        font-weight: 700;
+        font-size: 22px;
+      }
+
+      .title,
+      .company {
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .contact {
+        display: grid;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .contact a {
+        color: var(--accent);
+        text-decoration: none;
+        word-break: break-word;
+      }
+
+      .tagline {
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      .empty {
+        text-align: center;
+        gap: 12px;
+      }
+
+      .empty p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      @media (max-width: 720px) {
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .actions {
+          width: 100%;
+        }
+
+        .preview {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+
+        .contact {
+          justify-items: center;
+        }
+
+        .avatar {
+          margin: 0 auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>Jouw digitale visitekaart</h1>
+        <div class="actions">
+          <a class="ghost-link" href="index.html">Terug naar editor</a>
+          <button id="shareBtn" type="button">Delen</button>
+          <button id="vcardBtn" type="button">Download vCard</button>
+        </div>
+      </header>
+
+      <main>
+        <section id="cardView" class="card" aria-live="polite" hidden>
+          <div class="preview">
+            <img id="cardAvatar" class="avatar" alt="Profielfoto" />
+            <div>
+              <div id="cardName" class="name"></div>
+              <div id="cardTitle" class="title" hidden></div>
+              <div id="cardCompany" class="company" hidden></div>
+              <div class="contact">
+                <a id="cardEmail" hidden></a>
+                <a id="cardPhone" hidden></a>
+                <a id="cardWebsite" hidden></a>
+                <a id="cardLinkedIn" hidden>LinkedIn</a>
+                <a id="cardInstagram" hidden>Instagram</a>
+                <a id="cardX" hidden>X</a>
+              </div>
+            </div>
+          </div>
+          <p id="cardTagline" class="tagline" hidden></p>
+        </section>
+
+        <section id="emptyState" class="card empty" hidden>
+          <h2>Er is nog geen visitekaart</h2>
+          <p>Je hebt nog geen kaart opgeslagen op dit apparaat.</p>
+          <a class="ghost-link" href="index.html">Maak je kaart</a>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const STORAGE_KEY = 'card:data';
+      const PLACEHOLDER_AVATAR =
+        'data:image/svg+xml;utf8,' +
+        encodeURIComponent(
+          `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96"><rect width="100%" height="100%" fill="#0f1218"/><text x="50%" y="52%" dominant-baseline="middle" text-anchor="middle" fill="#2e3440" font-family="Arial" font-size="12">Foto</text></svg>`
+        );
+
+      function withProtocol(url) {
+        if (!url) return '';
+        if (/^(https?:|data:|blob:)/i.test(url)) return url;
+        return `https://${url}`;
+      }
+
+      function load() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return undefined;
+          return JSON.parse(raw);
+        } catch (error) {
+          console.warn('Kon kaartdata niet laden', error);
+          return undefined;
+        }
+      }
+
+      function setTextContent(element, value) {
+        if (!element) return;
+        if (value) {
+          element.textContent = value;
+          element.hidden = false;
+        } else {
+          element.textContent = '';
+          element.hidden = true;
+        }
+      }
+
+      function renderCard(data) {
+        const card = document.getElementById('cardView');
+        const empty = document.getElementById('emptyState');
+        if (!card || !empty) return;
+
+        empty.hidden = true;
+        card.hidden = false;
+
+        const avatar = document.getElementById('cardAvatar');
+        if (avatar instanceof HTMLImageElement) {
+          avatar.src = withProtocol(data.avatar) || PLACEHOLDER_AVATAR;
+        }
+
+        setTextContent(document.getElementById('cardName'), data.name || '');
+        setTextContent(document.getElementById('cardTitle'), data.title || '');
+        setTextContent(document.getElementById('cardCompany'), data.company || '');
+        setTextContent(document.getElementById('cardTagline'), data.bio || '');
+
+        const emailLink = document.getElementById('cardEmail');
+        if (emailLink instanceof HTMLAnchorElement) {
+          if (data.email) {
+            emailLink.href = `mailto:${data.email}`;
+            emailLink.textContent = data.email;
+            emailLink.hidden = false;
+          } else {
+            emailLink.removeAttribute('href');
+            emailLink.hidden = true;
+          }
+        }
+
+        const telLink = document.getElementById('cardPhone');
+        if (telLink instanceof HTMLAnchorElement) {
+          if (data.phone) {
+            telLink.href = `tel:${data.phone}`;
+            telLink.textContent = data.phone;
+            telLink.hidden = false;
+          } else {
+            telLink.removeAttribute('href');
+            telLink.hidden = true;
+          }
+        }
+
+        const webLink = document.getElementById('cardWebsite');
+        if (webLink instanceof HTMLAnchorElement) {
+          if (data.website) {
+            const safeWebsite = withProtocol(data.website);
+            webLink.href = safeWebsite;
+            webLink.textContent = data.website;
+            webLink.target = '_blank';
+            webLink.rel = 'noreferrer';
+            webLink.hidden = false;
+          } else {
+            webLink.removeAttribute('href');
+            webLink.textContent = '';
+            webLink.target = '_self';
+            webLink.rel = '';
+            webLink.hidden = true;
+          }
+        }
+
+        const linkedInLink = document.getElementById('cardLinkedIn');
+        if (linkedInLink instanceof HTMLAnchorElement) {
+          if (data.linkedin) {
+            linkedInLink.href = withProtocol(data.linkedin);
+            linkedInLink.hidden = false;
+          } else {
+            linkedInLink.removeAttribute('href');
+            linkedInLink.hidden = true;
+          }
+        }
+
+        const instagramLink = document.getElementById('cardInstagram');
+        if (instagramLink instanceof HTMLAnchorElement) {
+          if (data.instagram) {
+            instagramLink.href = withProtocol(data.instagram);
+            instagramLink.hidden = false;
+          } else {
+            instagramLink.removeAttribute('href');
+            instagramLink.hidden = true;
+          }
+        }
+
+        const xLink = document.getElementById('cardX');
+        if (xLink instanceof HTMLAnchorElement) {
+          if (data.x) {
+            xLink.href = withProtocol(data.x);
+            xLink.hidden = false;
+          } else {
+            xLink.removeAttribute('href');
+            xLink.hidden = true;
+          }
+        }
+      }
+
+      function renderEmpty() {
+        const card = document.getElementById('cardView');
+        const empty = document.getElementById('emptyState');
+        if (!card || !empty) return;
+        card.hidden = true;
+        empty.hidden = false;
+      }
+
+      function handleVCard(data) {
+        const vcard = [
+          'BEGIN:VCARD',
+          'VERSION:3.0',
+          data.name ? `FN:${data.name}` : '',
+          data.company ? `ORG:${data.company}` : '',
+          data.title ? `TITLE:${data.title}` : '',
+          data.email ? `EMAIL;TYPE=INTERNET:${data.email}` : '',
+          data.phone ? `TEL;TYPE=CELL:${data.phone}` : '',
+          data.website ? `URL:${withProtocol(data.website)}` : '',
+          'END:VCARD',
+        ]
+          .filter(Boolean)
+          .join('\n');
+
+        const blob = new Blob([vcard], { type: 'text/vcard' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'visitekaart.vcf';
+        link.click();
+        URL.revokeObjectURL(link.href);
+      }
+
+      async function handleShare(data) {
+        const url = window.location.href.split('#')[0];
+        const textParts = [data.name, data.title && `— ${data.title}`, data.company && `@ ${data.company}`]
+          .filter(Boolean)
+          .join(' ');
+
+        try {
+          if (navigator.share) {
+            await navigator.share({ title: document.title, text: textParts || document.title, url });
+          } else if (navigator.clipboard?.writeText) {
+            await navigator.clipboard.writeText(url);
+            window.alert('Link gekopieerd naar klembord');
+          } else {
+            window.prompt('Kopieer de link naar je kaart:', url);
+          }
+        } catch (error) {
+          console.warn('Delen geannuleerd of mislukt', error);
+        }
+      }
+
+      const data = load();
+      if (data) {
+        renderCard(data);
+        document.getElementById('vcardBtn')?.addEventListener('click', () => handleVCard(data));
+        document.getElementById('shareBtn')?.addEventListener('click', () => handleShare(data));
+      } else {
+        renderEmpty();
+        document.getElementById('vcardBtn')?.setAttribute('disabled', 'true');
+        document.getElementById('shareBtn')?.setAttribute('disabled', 'true');
+      }
+    </script>
+  </body>
+</html>
