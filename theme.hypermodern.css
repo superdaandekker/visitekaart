@@ -116,3 +116,27 @@ p.lead{color:var(--muted); font-size:clamp(16px,2.5vw,20px); margin:0}
   .avatar{width:64px; height:64px;}
   .preview{flex-direction:column; align-items:flex-start;}
 }
+/* Mobile nav toggle fix */
+.nav-btn {
+  display: none;
+  cursor: pointer;
+  padding: 10px 14px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 12px;
+  font-weight: 600;
+}
+.nav-toggle { display: none; }
+
+@media (max-width: 860px) {
+  .nav-btn { display: inline-flex; align-items: center; gap: 6px; }
+  .site-nav {
+    display: none;
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    flex-direction: column;
+    background: rgba(11,16,32,.96);
+    padding: 14px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+  .nav-toggle:checked ~ .site-nav { display: flex; }
+}
