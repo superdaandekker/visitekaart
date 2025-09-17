@@ -10,14 +10,14 @@
     />
     <link rel="icon" href="./favicon.svg" />
     <link rel="stylesheet" href="./styles.css" />
-    <link rel="stylesheet" href="theme.hypermodern.css?v=3" />
+    <link rel="stylesheet" href="theme.hypermodern.css?v=7">
   </head>
   <body class="page-dashboard" data-page="dashboard">
     <header class="site-header u-navbar">
-      <div class="inner container">
-        <div class="site-brand">
-          <a href="./index.html">Digitale Visitekaart</a>
-        </div>
+      <div class="inner">
+        <div class="brand"><a href="./index.html">Digitale Visitekaart</a></div>
+        <label for="nav-toggle" class="nav-btn">Menu</label>
+        <input id="nav-toggle" class="nav-toggle" type="checkbox" aria-label="Menu openen">
         <nav class="site-nav" aria-label="Hoofdmenu">
           <a href="./index.html">Start</a>
           <a href="./profile.html">Profiel</a>
@@ -32,141 +32,140 @@
     </header>
 
     <div class="page-content">
-      <div class="editor-wrap container">
-        <header class="editor-header">
-          <section class="hero">
-            <div class="content">
-              <h1>Digitale Visitekaart</h1>
-              <p class="muted">Bewerk je digitale visitekaart en deel hem met anderen.</p>
-            </div>
-            <div class="actions">
-              <button id="btnLogout" type="button" class="u-btn u-btn--ghost">Uitloggen</button>
-              <button id="btnShare" type="button" class="u-btn u-btn--primary">Delen</button>
-              <button id="btnVCard" type="button" class="u-btn u-btn--primary">Download vCard</button>
-            </div>
-          </section>
-        </header>
+      <section class="hero">
+        <div class="content">
+          <h1>Digitale Visitekaart</h1>
+          <p class="lead">Bewerk je digitale visitekaart en deel hem met anderen.</p>
+        </div>
+        <div class="actions">
+          <button id="btnLogout" type="button" class="u-btn u-btn--ghost">Uitloggen</button>
+          <button id="btnShare" type="button" class="u-btn u-btn--primary">Delen</button>
+          <button id="btnVCard" type="button" class="u-btn u-btn--primary">Download vCard</button>
+        </div>
+      </section>
+      <div class="container">
+        <div class="editor-wrap">
+          <main class="editor-main">
+            <section class="card u-card" aria-labelledby="previewTitle">
+              <h2 id="previewTitle" class="muted">Voorbeeldkaart</h2>
+              <div class="preview">
+                <img id="avatarPreview" class="avatar" alt="Profielfoto" />
+                <div>
+                  <div class="name" id="namePreview">Jouw Naam</div>
+                  <div class="title" id="titlePreview">Functie</div>
+                  <div class="company" id="companyPreview">Bedrijf</div>
+                  <div class="contact">
+                    <a href="#" id="emailLink" aria-disabled="true">E-mail</a>
+                    <a href="#" id="telLink" aria-disabled="true">Telefoon</a>
+                    <a href="#" id="webLink" aria-disabled="true">Website</a>
+                    <a href="#" id="liLink" aria-disabled="true">LinkedIn</a>
+                    <a href="#" id="igLink" aria-disabled="true">Instagram</a>
+                    <a href="#" id="xLink" aria-disabled="true">X</a>
+                  </div>
+                </div>
+              </div>
+              <p id="tagline"></p>
+            </section>
 
-        <main class="editor-main">
-          <section class="card u-card" aria-labelledby="previewTitle">
-            <h2 id="previewTitle" class="muted">Voorbeeldkaart</h2>
-            <div class="preview">
-              <img id="avatarPreview" class="avatar" alt="Profielfoto" />
-              <div>
-                <div class="name" id="namePreview">Jouw Naam</div>
-                <div class="title" id="titlePreview">Functie</div>
-                <div class="company" id="companyPreview">Bedrijf</div>
-                <div class="contact">
-                  <a href="#" id="emailLink" aria-disabled="true">E-mail</a>
-                  <a href="#" id="telLink" aria-disabled="true">Telefoon</a>
-                  <a href="#" id="webLink" aria-disabled="true">Website</a>
-                  <a href="#" id="liLink" aria-disabled="true">LinkedIn</a>
-                  <a href="#" id="igLink" aria-disabled="true">Instagram</a>
-                  <a href="#" id="xLink" aria-disabled="true">X</a>
+            <section class="card u-card" aria-labelledby="editTitle">
+              <h2 id="editTitle" class="muted">Bewerken</h2>
+              <form id="editForm">
+                <div class="grid cols-2">
+                  <div>
+                    <label for="fieldName">Naam</label>
+                    <input id="fieldName" name="name" class="u-input" placeholder="Jouw Naam" />
+                  </div>
+                  <div>
+                    <label for="fieldTitle">Functie</label>
+                    <input id="fieldTitle" name="title" class="u-input" placeholder="Bijv. Founder" />
+                  </div>
                 </div>
-              </div>
-            </div>
-            <p id="tagline"></p>
-          </section>
-
-          <section class="card u-card" aria-labelledby="editTitle">
-            <h2 id="editTitle" class="muted">Bewerken</h2>
-            <form id="editForm">
-              <div class="grid-2 grid cols-2">
-                <div>
-                  <label for="fieldName">Naam</label>
-                  <input id="fieldName" name="name" class="u-input" placeholder="Jouw Naam" />
+                <div class="grid cols-2">
+                  <div>
+                    <label for="fieldCompany">Bedrijf</label>
+                    <input id="fieldCompany" name="company" class="u-input" placeholder="Bedrijfsnaam" />
+                  </div>
+                  <div>
+                    <label for="fieldWebsite">Website</label>
+                    <input id="fieldWebsite" name="website" class="u-input" placeholder="https://..." />
+                  </div>
+                </div>
+                <div class="grid cols-2">
+                  <div>
+                    <label for="fieldEmail">E-mail</label>
+                    <input
+                      id="fieldEmail"
+                      name="email"
+                      type="email"
+                      class="u-input"
+                      placeholder="jij@voorbeeld.nl"
+                    />
+                  </div>
+                  <div>
+                    <label for="fieldPhone">Telefoon</label>
+                    <input id="fieldPhone" name="phone" class="u-input" placeholder="+31..." />
+                  </div>
+                </div>
+                <div class="grid cols-2">
+                  <div>
+                    <label for="fieldLinkedIn">LinkedIn</label>
+                    <input
+                      id="fieldLinkedIn"
+                      name="linkedin"
+                      class="u-input"
+                      placeholder="https://linkedin.com/in/..."
+                    />
+                  </div>
+                  <div>
+                    <label for="fieldInstagram">Instagram</label>
+                    <input
+                      id="fieldInstagram"
+                      name="instagram"
+                      class="u-input"
+                      placeholder="https://instagram.com/..."
+                    />
+                  </div>
+                </div>
+                <div class="grid cols-2">
+                  <div>
+                    <label for="fieldX">X (Twitter)</label>
+                    <input id="fieldX" name="x" class="u-input" placeholder="https://x.com/..." />
+                  </div>
+                  <div aria-hidden="true"></div>
                 </div>
                 <div>
-                  <label for="fieldTitle">Functie</label>
-                  <input id="fieldTitle" name="title" class="u-input" placeholder="Bijv. Founder" />
-                </div>
-              </div>
-              <div class="grid-2 grid cols-2">
-                <div>
-                  <label for="fieldCompany">Bedrijf</label>
-                  <input id="fieldCompany" name="company" class="u-input" placeholder="Bedrijfsnaam" />
+                  <label for="fieldAvatar">Profielfoto (URL)</label>
+                  <input id="fieldAvatar" name="avatar" class="u-input" placeholder="https://...jpg" />
                 </div>
                 <div>
-                  <label for="fieldWebsite">Website</label>
-                  <input id="fieldWebsite" name="website" class="u-input" placeholder="https://..." />
-                </div>
-              </div>
-              <div class="grid-2 grid cols-2">
-                <div>
-                  <label for="fieldEmail">E-mail</label>
-                  <input
-                    id="fieldEmail"
-                    name="email"
-                    type="email"
+                  <label for="fieldBio">Korte bio / tagline</label>
+                  <textarea
+                    id="fieldBio"
+                    name="bio"
+                    rows="3"
                     class="u-input"
-                    placeholder="jij@voorbeeld.nl"
-                  />
+                    placeholder="Wat doe jij?"
+                  ></textarea>
                 </div>
-                <div>
-                  <label for="fieldPhone">Telefoon</label>
-                  <input id="fieldPhone" name="phone" class="u-input" placeholder="+31..." />
+                <div class="row">
+                  <button id="btnGenerate" type="button" class="u-btn u-btn--primary">
+                    Genereer tagline met AI
+                  </button>
+                  <span class="pill">OpenAI-sleutel vereist</span>
                 </div>
+              </form>
+              <div class="notice" role="status">
+                Configureer het endpoint <code>/api/generate</code> met een OpenAI-sleutel om automatisch een tagline te genereren.
               </div>
-              <div class="grid-2 grid cols-2">
-                <div>
-                  <label for="fieldLinkedIn">LinkedIn</label>
-                  <input
-                    id="fieldLinkedIn"
-                    name="linkedin"
-                    class="u-input"
-                    placeholder="https://linkedin.com/in/..."
-                  />
-                </div>
-                <div>
-                  <label for="fieldInstagram">Instagram</label>
-                  <input
-                    id="fieldInstagram"
-                    name="instagram"
-                    class="u-input"
-                    placeholder="https://instagram.com/..."
-                  />
-                </div>
-              </div>
-              <div class="grid-2 grid cols-2">
-                <div>
-                  <label for="fieldX">X (Twitter)</label>
-                  <input id="fieldX" name="x" class="u-input" placeholder="https://x.com/..." />
-                </div>
-                <div aria-hidden="true"></div>
-              </div>
-              <div>
-                <label for="fieldAvatar">Profielfoto (URL)</label>
-                <input id="fieldAvatar" name="avatar" class="u-input" placeholder="https://...jpg" />
-              </div>
-              <div>
-                <label for="fieldBio">Korte bio / tagline</label>
-                <textarea
-                  id="fieldBio"
-                  name="bio"
-                  rows="3"
-                  class="u-input"
-                  placeholder="Wat doe jij?"
-                ></textarea>
-              </div>
-              <div class="row">
-                <button id="btnGenerate" type="button" class="u-btn u-btn--primary">
-                  Genereer tagline met AI
-                </button>
-                <span class="pill">OpenAI-sleutel vereist</span>
-              </div>
-            </form>
-            <div class="notice" role="status">
-              Configureer het endpoint <code>/api/generate</code> met een OpenAI-sleutel om automatisch een tagline te genereren.
-            </div>
-          </section>
-        </main>
+            </section>
+          </main>
 
         <footer class="editor-footer u-footer">
           Bewaar je wijzigingen lokaal en deel je kaart. De AI-functie gebruikt het serverless endpoint met
           <code>OPENAI_API_KEY</code>.
         </footer>
       </div>
+    </div>
     </div>
 
     <script src="./app.js"></script>
